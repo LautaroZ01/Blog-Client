@@ -1,0 +1,63 @@
+import { validateToken } from "@/API/AuthAPI"
+import { ConfirmToken } from "@/types/userType"
+import { PinInput, PinInputField } from "@chakra-ui/pin-input"
+import { useMutation } from "@tanstack/react-query"
+import { Dispatch, SetStateAction } from "react"
+import { Link } from "react-router-dom"
+import { toast } from "react-toastify"
+
+type NewPasswordTokenProps = {
+    token: ConfirmToken['token']
+    setToken: Dispatch<SetStateAction<string>>
+    setIsValidToken: Dispatch<SetStateAction<boolean>>
+}
+
+export default function NewPasswordToken({ token, setToken, setIsValidToken }: NewPasswordTokenProps) {
+    const handleChange = (token: ConfirmToken['token']) => {
+        setToken(token)
+    }
+
+    const { mutate } = useMutation({
+        mutationFn: validateToken,
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSuccess: (data) => {
+            toast.success(data)
+            setIsValidToken(true)
+            setToken(token)
+        }
+    })
+
+    const handleComplete = (token: ConfirmToken['token']) => mutate({ token })
+
+    return (
+        <>
+            <form
+                className="min-w-full md:min-w-xl max-w-full mx-auto space-y-4"
+            >
+                <label
+                    className="font-normal text-center block"
+                >Código de 6 dígitos</label>
+                <div className="flex justify-center gap-5">
+                    <PinInput otp value={token} onChange={handleChange} onComplete={handleComplete}>
+                        <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
+                        <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
+                        <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
+                        <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
+                        <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
+                        <PinInputField className="h-10 w-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
+                    </PinInput>
+                </div>
+            </form>
+            <nav className="flex flex-col space-y-4 p-4 mb-2">
+                <Link
+                    to='/auth/forgot-password'
+                    className="link-data"
+                >
+                    Solicitar un nuevo Código
+                </Link>
+            </nav>
+        </>
+    )
+}

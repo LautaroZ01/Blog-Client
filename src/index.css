@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+    /* Colores primarios (azules) */
+    --color-primary-50: #e6f4ff;
+    --color-primary-100: #b7e9ff;
+    --color-primary-200: #8fd4ff;
+    --color-primary-300: #4e88ca;
+    --color-primary-400: #2a6da9;
+    --color-primary-500: #005B99;
+    --color-primary-600: #00487a;
+    --color-primary-700: #00365c;
+    --color-primary-800: #00243e;
+    --color-primary-900: #00121f;
+
+    /* Colores de acento (dorados) */
+    --color-accent-50: #fff9e6;
+    --color-accent-100: #FFD700;
+    --color-accent-200: #e9c64d;
+    --color-accent-300: #e9aa2b;
+    --color-accent-400: #d4941a;
+    --color-accent-500: #c78f1a;
+    --color-accent-600: #a87715;
+    --color-accent-700: #8a5f10;
+    --color-accent-800: #6c470b;
+    --color-accent-900: #4e2f06;
+
+    /* Colores de texto (grises) */
+    --color-text-50: #fafafa;
+    --color-text-100: #F5F5F5;
+    --color-text-200: #ebebeb;
+    --color-text-300: #c2c2c2;
+    --color-text-400: #999999;
+    --color-text-500: #5c5c5c;
+    --color-text-600: #4a4a4a;
+    --color-text-700: #333333;
+    --color-text-800: #1f1f1f;
+    --color-text-900: #0a0a0a;
+
+    /* Colores de fondo (grises claros) */
+    --color-bg-50: #ffffff;
+    --color-bg-100: #F5F5F5;
+    --color-bg-200: #ebebeb;
+    --color-bg-300: #c2c2c2;
+    --color-bg-400: #999999;
+    --color-bg-500: #707070;
+    --color-bg-600: #575757;
+    --color-bg-700: #3d3d3d;
+    --color-bg-800: #242424;
+    --color-bg-900: #0a0a0a;
+
+    --transition-duration-pro: 0.25s;
+
+}
+
+* {
+    font-family: "Roboto", serif;
+    scroll-behavior: smooth;
+}
+
+h1,
+h2,
+h3 {
+    font-family: "Inter", serif;
+}
+
+.h1-style {
+    @apply text-2xl font-bold text-gray-700;
+}
+
+.input-data:-webkit-autofill,
+.input-data:-webkit-autofill:hover,
+.input-data:-webkit-autofill:focus,
+.input-data:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    /* Fondo blanco */
+    -webkit-text-fill-color: #333;
+    /* Color del texto */
+}
+
+.nav-btn{
+    @apply cursor-pointer flex items-center gap-2 p-2 w-full hover:bg-gray-100 rounded-md transition-colors duration-pro;
+}
+
+.container-blog {
+    @apply max-w-2xl md:max-w-4xl lg:max-w-7xl mx-auto px-4 sm:px-6 md:px-8;
+}
+
+.h1-style {
+    @apply text-4xl font-semibold text-gray-700 text-balance;
+}
+
+.form-data {
+    @apply flex items-center pl-2 rounded-md border-gray-300 border;
+}
+
+.input-data {
+    @apply w-full p-3 md:ml-2 focus:outline-none autofill:bg-white autofill:text-gray-800;
+}
+
+.input-profile {
+    @apply font-semibold text-gray-700 p-2 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:border-transparent rounded-md;
+}
+
+.profile-info {
+    @apply font-semibold p-2 text-gray-700;
+}
+
+.label-profile {
+    @apply text-gray-500;
+}
+
+.container-profile {
+    @apply flex flex-col min-w-80;
+}
+
+.container-responsive-profile {
+    @apply flex gap-2 flex-wrap md:flex-nowrap;
+}
+
+.link-data {
+    @apply text-center text-gray-400 hover:text-gray-500 font-normal;
+}
+
+.btn-primary {
+    @apply cursor-pointer px-6 py-2 font-semibold bg-primary-400 text-sm text-white rounded border border-transparent hover:text-black hover:bg-transparent hover:border-primary-600 transition-all duration-pro;
+}
+
+.btn-secundary {
+    @apply cursor-pointer px-6 py-2 font-semibold text-sm rounded border border-primary-400 hover:text-white hover:bg-primary-400 hover:border-transparent transition-all duration-pro;
+}
+
+.btn-primary-delete {
+    @apply cursor-pointer px-6 py-2 font-semibold bg-red-500 text-sm text-white rounded border border-transparent hover:text-black hover:bg-transparent hover:border-red-600 transition-all duration-pro;
+}
+
+.btn-secundary-delete {
+    @apply cursor-pointer px-6 py-2 font-semibold text-sm rounded border border-red-500 hover:text-red-800 hover:bg-red-100 hover:border-transparent transition-all duration-pro;
+}
+
+.btn-rounded {
+    @apply p-2 text-primary-400 text-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-primary-400 hover:text-white transition-all duration-pro;
+}
+
+.btn-rounded-delete {
+    @apply p-2 text-gray-400 text-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-red-400 hover:text-white transition-all duration-pro;
+}
+
+.link-dashboard {
+    @apply flex items-center gap-2 p-2 justify-center sm:justify-start rounded transition-colors duration-200 relative;
+}
+
+.link-dashboard-active {
+    @apply bg-white text-primary-500;
+}
+
+.link-dashboard-not-active {
+    @apply text-gray-500 hover:text-primary-500 hover:bg-white;
+}
+
+.rich-text-style {
+    @apply flex flex-col justify-center gap-4 text-lg;
+}
+
+.rich-text-style p {
+    @apply text-wrap text-gray-500 mb-4;
+}
+
+.rich-text-style h1,
+.rich-text-style h2,
+.rich-text-style h3 {
+    @apply font-semibold text-gray-700 mb-2;
+}
+
+.rich-text-style h1 {
+    @apply text-4xl;
+}
+
+.rich-text-style h2 {
+    @apply text-2xl;
+}
+
+.rich-text-style ul {
+    @apply list-inside list-disc;
+}
+
+.rich-text-style li p {
+    @apply inline;
+}
+
+.rich-text-style ol {
+    @apply list-inside list-decimal;
+}
+
+.rich-text-style ol li {
+    @apply my-6;
+}
+
+.rich-text-style li {
+    @apply mb-2 space-y-2 ml-4;
+}
+
+.rich-text-style ol li p:nth-child(n+2) {
+    @apply block my-4 ml-2;
+}
+
+.form-comment {
+    @apply flex flex-col gap-6 w-full;
+}
+
+.badget-dashboard {
+    @apply p-1 rounded-lg font-bold;
+}
+
+.user-detail-box{
+    @apply p-4 my-8 bg-bg-100/50 rounded-md shadow-md min-h-[400px];
+}
+
+.user-detail-content{
+    @apply flex items-start justify-between gap-10 max-h-[300px] overflow-y-auto mb-6;
+}
+
+.user-detail-content div{
+    @apply flex justify-between w-full text-gray-500;
+}
+
+.user-detail-btn-active{
+    @apply text-primary-500 border-b border-primary-500;
+}
+
+.user-detail-btn-not-active{
+    @apply text-gray-500 hover:text-primary-500 hover:bg-white border-b border-b-transparent hover:border-b-primary-500 transition-all duration-pro;
+}
+
+@keyframes menuanimation {
+    0% {
+        transform: scale(0);
+    }
+
+    70% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes insertAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    50% {
+        opacity: .5;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes scale-x-animation {
+    0% {
+        scale: 1 0;
+    }
+
+    50% {
+        scale: 1 .5;
+    }
+
+    100% {
+        scale: 1 1;
+    }
+}
+
+.menu-animation {
+    animation: menuanimation .25s both;
+}
+
+.insert-animation {
+    animation: insertAnimation .25s forwards;
+}
+
+.fade-in-animation {
+    animation: scale-x-animation .25s forwards;
+}
