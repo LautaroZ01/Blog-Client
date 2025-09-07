@@ -142,21 +142,25 @@ blog-v2/
 ├── Client/                 # Aplicación Frontend
 │   ├── public/            # Archivos estáticos
 │   └── src/               # Código fuente del frontend
+│       ├── API/           # Servicios API
 │       ├── components/    # Componentes reutilizables
-│       ├── pages/         # Páginas de la aplicación
 │       ├── context/       # Contextos de React
 │       ├── hooks/         # Custom hooks
-│       ├── services/      # Servicios API
-│       ├── styles/        # Estilos globales
-│       └── utils/         # Utilidades
+│       ├── layouts/       # Layouts
+│       ├── lib/           # Configuraciones
+│       ├── locales/       # Idiomas
+│       ├── types/         # Tipos de datos
+│       ├── utils/         # Utilidades
+│       ├── views/         # Páginas de la aplicación
 │
 └── Server/                # Aplicación Backend
     ├── src/
     │   ├── config/       # Configuraciones
-    │   ├── controllers/   # Controladores
+    │   ├── controllers/  # Controladores
+    │   ├── email/        # Funcionalidades de correo
+    │   ├── middleware/   # Middlewares
     │   ├── models/       # Modelos de datos
     │   ├── routes/       # Rutas de la API
-    │   ├── middleware/   # Middlewares
     │   ├── services/     # Lógica de negocio
     │   └── utils/        # Utilidades
     └── .env              # Variables de entorno
