@@ -5,7 +5,7 @@ import { useSearch } from "@/hooks/useSearch"
 import { useQuery } from "@tanstack/react-query"
 import { ITEMS_PER_PAGE, roleColor, statusColor } from "@/utils/dashboardUtil"
 import { Link } from "react-router-dom"
-import { FaComments, FaPlus } from "react-icons/fa"
+import { FaComments } from "react-icons/fa"
 import Header from "@/components/dashboard/Header"
 import { SearchComponent } from "@/components/ui/SeachComponent"
 import { Pagination } from "@/components/ui/Pagination"
@@ -17,6 +17,7 @@ import { RiContactsBookFill } from "react-icons/ri";
 import AuthPhoto from "@/components/auth/AuthPhoto"
 import UserDetail from "@/components/dashboard/user/UserDetail"
 import { roleUsers, userStatus } from "@/locales/es"
+import DeleteUserModal from "@/components/dashboard/user/DeleteUserModal"
 
 export default function UserView() {
   const navigate = useNavigate()
@@ -55,13 +56,7 @@ export default function UserView() {
         subtitleA="Esta es la vista de usuarios,"
         subtitleB="aquí puede administrar los usuarios."
       >
-        <Link
-          to='/dashboard/user/create'
-          className="btn-primary flex items-center gap-2"
-        >
-          <FaPlus />
-          Agregar
-        </Link>
+        <></>
       </Header>
 
       <SearchComponent
@@ -128,7 +123,7 @@ export default function UserView() {
 
             <td className="px-6 py-4 flex items-center justify-end gap-2">
               <Link
-                to={`/dashboard/user/${user._id}`}
+                to={`/dashboard/user?detailUser=${user._id}`}
                 className="btn-rounded"
               >
                 <MdModeEdit />
@@ -153,6 +148,7 @@ export default function UserView() {
       />
 
       <UserDetail />
+      <DeleteUserModal />
     </>
   )
 }

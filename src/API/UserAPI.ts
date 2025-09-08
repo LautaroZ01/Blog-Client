@@ -72,7 +72,7 @@ export async function getAllUsers() {
     }
 }
 
-export async function getUserById(userId: string) {
+export async function getUserById(userId: User['_id']) {
     try {
         const { data } = await api.get(`/dashboard/user/${userId}`)
         const response = userDashboardSchema.safeParse(data)
@@ -101,9 +101,21 @@ export async function updateUserRole({ userId, formData }: { userId: User['_id']
     }
 }
 
-export async function changeUserStatus(userId: string) {
+export async function changeUserStatus(userId: User['_id']) {
     try {
         const { data } = await api.patch<string>(`/dashboard/user/${userId}/status`)
+
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function deleteUser(userId: User['_id']){
+    try {
+        const { data } = await api.delete<string>(`/dashboard/user/${userId}`)
 
         return data
     } catch (error) {
