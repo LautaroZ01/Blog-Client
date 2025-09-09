@@ -1,13 +1,11 @@
 import { getAllUsers } from "@/API/UserAPI"
 import { Column } from "@/types/postType"
 import { usePagination } from "@/hooks/usePagination"
-import { useSearch } from "@/hooks/useSearch"
 import { useQuery } from "@tanstack/react-query"
 import { ITEMS_PER_PAGE, roleColor, statusColor } from "@/utils/dashboardUtil"
 import { Link } from "react-router-dom"
 import { FaComments } from "react-icons/fa"
 import Header from "@/components/dashboard/Header"
-import { SearchComponent } from "@/components/ui/SeachComponent"
 import { Pagination } from "@/components/ui/Pagination"
 import Table from "@/components/dashboard/Table"
 import { MdDelete, MdModeEdit } from "react-icons/md"
@@ -18,6 +16,11 @@ import AuthPhoto from "@/components/auth/AuthPhoto"
 import UserDetail from "@/components/dashboard/user/UserDetail"
 import { roleUsers, userStatus } from "@/locales/es"
 import DeleteUserModal from "@/components/dashboard/user/DeleteUserModal"
+import { UserFilter, userRoles, userStatusSchema } from "@/types/userType"
+import { useForm } from "react-hook-form"
+import { useState } from "react"
+import { FiSearch } from "react-icons/fi"
+import Filter from "@/components/ui/Filter"
 
 export default function UserView() {
   const navigate = useNavigate()
@@ -29,23 +32,38 @@ export default function UserView() {
     { label: 'Interacciones' }
   ]
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['usersDashboard'],
-    queryFn: getAllUsers,
-    retry: false
-  })
+  const defaultValues: UserFilter = {
+    role: '',
+    status: '',
+    search: ''
+  }
 
-  const { searchTerm, setSearchTerm, filteredData } = useSearch(
-    data || [],
-    ['name', 'email', 'lastname']
-  );
+  const [filter, setFilter] = useState<UserFilter>(defaultValues)
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['usersDashboard', filter],
+    queryFn: () => getAllUsers(filter)
+  })
 
   const {
     currentPage,
     setCurrentPage,
     totalPages,
     paginatedItems,
-  } = usePagination(filteredData, ITEMS_PER_PAGE);
+  } = usePagination(data || [], ITEMS_PER_PAGE);
+
+  const { register, handleSubmit } = useForm<UserFilter>({
+    defaultValues
+  })
+
+  const onSubmit = handleSubmit((data) => {
+    setFilter({
+      ...data,
+      role: data.role || '',
+      status: data.status || '',
+      search: data.search || ''
+    })
+  })
 
   if (isLoading) return 'Cargando...'
 
@@ -59,12 +77,57 @@ export default function UserView() {
         <></>
       </Header>
 
-      <SearchComponent
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        searchFields={['Nombre', 'Correo', 'Apellido']}
-        placeholder="Buscar usuarios..."
-      />
+      <form onSubmit={onSubmit} className="flex gap-2 justify-end w-full">
+        <div className="mb-4 flex flex-col gap-2 justify-center items-end grow">
+          <div className="lg:flex items-center justify-center w-full lg:max-w-lg border border-gray-300 rounded-md">
+            <input
+              type="text"
+              placeholder="Buscar usuario..."
+              id="search"
+              {...register('search')}
+              className="w-full focus:outline-none p-2 autofill:bg-white autofill:text-gray-800"
+            />
+            <button type="submit" className="text-gray-500 py-2 px-4 border-l border-gray-300 cursor-pointe">
+              <FiSearch />
+            </button>
+          </div>
+        </div>
+        <Filter>
+          <div className="flex gap-4 items-end">
+            <div>
+              <label htmlFor="role"><small>Rol</small></label>
+              <select
+                id="role"
+                {...register('role')}
+                className="select-filter"
+              >
+                <option value="">Todos</option>
+                {userRoles.map((role) => (
+                  <option key={role} value={role}>
+                    {roleUsers[role]}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="status"><small>Estado</small></label>
+              <select
+                id="status"
+                {...register('status')}
+                className="select-filter"
+              >
+                <option value="">Todos</option>
+                {userStatusSchema.options.map((status) => (
+                  <option key={status} value={status}>
+                    {userStatus[status]}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button type="submit" className="btn-secundary">Filtrar</button>
+          </div>
+        </Filter>
+      </form>
 
       <Table columns={colsUsers}>
         {paginatedItems.map((user, index) => (
@@ -74,9 +137,9 @@ export default function UserView() {
             </td>
 
             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-              <Link 
-              to={`/dashboard/user?detailUser=${user._id}`}
-              className="flex items-center gap-2 hover:text-primary-500 transition-colors duration-pro"
+              <Link
+                to={`/dashboard/user?detailUser=${user._id}`}
+                className="flex items-center gap-2 hover:text-primary-500 transition-colors duration-pro"
               >
                 <AuthPhoto photo={user.photo} name={user.name} size="normal" />
                 <div className="flex flex-col">

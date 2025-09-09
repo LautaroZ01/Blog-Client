@@ -37,6 +37,12 @@ export const userSchema = z.object({
     password: z.string()
 })
 
+export const userFilterSchema = z.object({
+    role: z.string().optional(),
+    status: z.string().optional(),
+    search: z.string().optional()
+})
+
 export const profileSchema = userSchema.pick({
     email: true,
     name: true,
@@ -116,13 +122,15 @@ export type Profile = z.infer<typeof profileSchema>
 export type Writer = z.infer<typeof writerSchema>
 export type SocialNetwork = z.infer<typeof socialNetworksSchema>
 export type Contact = z.infer<typeof contactsSchema>
-type Auth = z.infer<typeof authSchema>
+export type Auth = z.infer<typeof authSchema>
 
 export type UserLoginForm = Pick<Auth, 'email' | 'password'>
 export type UserRegistrationForm = Pick<Auth, 'name' | 'lastname' | 'email' | 'birthdate' | 'country' | 'password' | 'password_confirmation'>
+export type UserFilter = z.infer<typeof userFilterSchema>
 export type ProfileForm = Omit<Pick<User, 'name' | 'email' | 'lastname' | 'country'>, 'birthdate'> & {
     birthdate: string;
 };
+
 export type ChangePasswordForm = Pick<Auth, 'current_password' | 'password' | 'password_confirmation'>
 export type CheckPasswordForm = Pick<Auth, 'password'>
 export type ConfirmToken = Pick<Auth, 'token'>

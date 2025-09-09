@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import { userDashboardSchema, usersDashboardSchema } from "@/types/type";
-import { ChangePasswordForm, EditRoleForm, ProfileForm, profileSchema, User } from "@/types/userType";
+import { ChangePasswordForm, EditRoleForm, ProfileForm, profileSchema, User, UserFilter } from "@/types/userType";
 import { isAxiosError } from "axios";
 
 export async function getProfile() {
@@ -55,9 +55,9 @@ export async function updateProfilePhoto(photoData: string) {
     }
 }
 
-export async function getAllUsers() {
+export async function getAllUsers(query: UserFilter) {
     try {
-        const { data } = await api.get('/dashboard/user')
+        const { data } = await api.get('/dashboard/user', { params: query })
         const response = usersDashboardSchema.safeParse(data)
 
         if (response.success) {

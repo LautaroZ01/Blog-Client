@@ -235,6 +235,10 @@ h3 {
     @apply text-gray-500 hover:text-primary-500 hover:bg-white border-b border-b-transparent hover:border-b-primary-500 transition-all duration-pro;
 }
 
+.select-filter{
+    @apply min-w-50 border border-gray-300 rounded-md p-2 cursor-pointer;
+}
+
 @keyframes menuanimation {
     0% {
         transform: scale(0);
