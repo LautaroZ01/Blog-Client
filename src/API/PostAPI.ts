@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { Post, postEditSchema, PostFormType, postSchema, postsSchema } from "@/types/postType";
+import { Post, postEditSchema, PostFilter, PostFormType, postSchema, postsDashboardSchema, postsSchema } from "@/types/postType";
 import { uploadImageToCloudinary } from "@/utils/cloudinary";
 import { isAxiosError } from "axios";
 
@@ -18,10 +18,11 @@ export async function getPostsHome() {
     }
 }
 
-export async function getPostDashboard() {
+export async function getPostDashboard(filter: PostFilter) {
     try {
-        const { data } = await api.get('/dashboard/post');
-        const response = postsSchema.safeParse(data);
+        const { data } = await api.get('/dashboard/post', { params: filter });
+        const response = postsDashboardSchema.safeParse(data);
+        console.log(response)
 
         if (response.success) {
             return response.data;

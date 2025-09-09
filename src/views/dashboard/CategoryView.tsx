@@ -5,9 +5,7 @@ import EditCategory from "@/components/dashboard/category/EditCategory";
 import Header from "@/components/dashboard/Header";
 import Table from "@/components/dashboard/Table";
 import { Pagination } from "@/components/ui/Pagination";
-import { SearchComponent } from "@/components/ui/SeachComponent";
 import { usePagination } from "@/hooks/usePagination";
-import { useSearch } from "@/hooks/useSearch";
 import type { Column } from "@/types/postType";
 import { ITEMS_PER_PAGE } from "@/utils/dashboardUtil";
 import { useQuery } from "@tanstack/react-query";
@@ -30,17 +28,13 @@ export default function CategoryView() {
     retry: false
   })
 
-  const { searchTerm, setSearchTerm, filteredData } = useSearch(
-    data || [],
-    ['name', 'slug', 'description']
-  );
 
   const {
     currentPage,
     setCurrentPage,
     totalPages,
     paginatedItems,
-  } = usePagination(filteredData, ITEMS_PER_PAGE);
+  } = usePagination(data || [], ITEMS_PER_PAGE);
 
   if (isLoading) return 'Cargando...'
 
@@ -60,13 +54,6 @@ export default function CategoryView() {
             Agregar
           </button>
         </Header>
-
-        <SearchComponent
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          searchFields={['Nombre', 'Slug', 'Descripcion']}
-          placeholder="Buscar categorías..."
-        />
 
         <Table columns={colsCategory} >
           {paginatedItems.map((category, index) => (

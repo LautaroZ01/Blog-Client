@@ -121,14 +121,35 @@ export const postEditSchema = postSchema.pick({
 
 export const postsViewSchema = z.array(postViewSchema)
 
+export const postFilterSchema = z.object({
+    search: z.string().optional(),
+    category: z.string().optional(),
+    tag: z.string().optional(),
+    status: z.string().optional()
+})
+
 export type PostView = z.infer<typeof postViewSchema>
 export type PostsView = z.infer<typeof postsViewSchema>
 
 export const postsSchema = z.array(postSchema)
+
+export const postsDashboardSchema = z.object({
+    posts: postsSchema,
+    categories: z.array(categorySchema.pick({
+        _id: true,
+        name: true
+    })),
+    tags: z.array(tagSchema.pick({
+        _id: true,
+        name: true
+    }))
+})
+
 export type Post = z.infer<typeof postSchema>
 export type PostEdit = z.infer<typeof postEditSchema>
 export type Posts = z.infer<typeof postsSchema>
 export type PostFormType = z.infer<typeof postFormSchema>;
+export type PostFilter = z.infer<typeof postFilterSchema>;
 
 export const commentStructure = z.object({
     _id: z.string(),

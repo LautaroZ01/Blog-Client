@@ -12,7 +12,8 @@ export default function CommentListByPostId() {
     const { data, isLoading, isError } = useQuery({
         queryKey: ['commentsPost', postId],
         queryFn: () => getCommentsByPostId(postId),
-        retry: false
+        retry: false,
+        enabled: !!postId
     })
 
     

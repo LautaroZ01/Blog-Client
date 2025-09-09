@@ -2,10 +2,8 @@ import { getPostDashboard } from "@/API/PostAPI"
 import Header from "@/components/dashboard/Header"
 import Table from "@/components/dashboard/Table"
 import { Pagination } from "@/components/ui/Pagination"
-import { SearchComponent } from "@/components/ui/SeachComponent"
 import { usePagination } from "@/hooks/usePagination"
-import { useSearch } from "@/hooks/useSearch"
-import { Column } from "@/types/postType"
+import { Column, PostFilter, postStatusSchema } from "@/types/postType"
 import { ITEMS_PER_PAGE } from "@/utils/dashboardUtil"
 import { useQuery } from "@tanstack/react-query"
 import { FaPlus, FaComments, FaEye, FaHeart } from "react-icons/fa"
@@ -15,9 +13,14 @@ import { formatDate } from "@/utils/formatUtil"
 import { postStatus } from "@/locales/es"
 import DeletePostModal from "@/components/dashboard/post/DeletePostModal"
 import CommentListByPostId from "@/components/dashboard/post/comment/CommentListByPostId"
+import { useMemo, useState } from "react"
+import { useSearchParams } from "react-router-dom"
+import { FilterForm } from "@/components/ui/FilterForm"
 
 export default function PostView() {
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+
   const colsPosts: Column[] = [
     { label: 'Titulo' },
     { label: 'Categoria' },
@@ -25,28 +28,55 @@ export default function PostView() {
     { label: 'Estado' },
   ]
 
+  const defaultValues: PostFilter = useMemo(
+    () => ({
+      search: searchParams.get("search") || "",
+      category: searchParams.get("category") || "",
+      tag: searchParams.get("tag") || "",
+      status: searchParams.get("status") || "",
+    }),
+    [searchParams]
+  )
+
+  const [filter, setFilter] = useState<PostFilter>(defaultValues)
+
   const { data, isLoading } = useQuery({
-    queryKey: ['postsDashboard'],
-    queryFn: getPostDashboard,
+    queryKey: ['postsDashboard', filter],
+    queryFn: () => getPostDashboard(filter),
     retry: false
   })
-
-  const { searchTerm, setSearchTerm, filteredData } = useSearch(
-    data || [],
-    ['title']
-  );
 
   const {
     currentPage,
     setCurrentPage,
     totalPages,
     paginatedItems,
-  } = usePagination(filteredData, ITEMS_PER_PAGE);
+  } = usePagination(data?.posts || [], ITEMS_PER_PAGE);
 
   const statusColor = {
     draft: 'bg-yellow-100 text-yellow-800',
     published: 'bg-green-100 text-green-800',
     archived: 'bg-red-100 text-red-800'
+  }
+
+  const onSubmit = (data: PostFilter) => {
+    const params: Record<string, string> = {}
+
+    if (data.search) params.search = data.search
+    if (data.category) params.category = data.category
+    if (data.tag) params.tag = data.tag
+    if (data.status) params.status = data.status
+
+    setSearchParams(params)
+
+    setFilter({
+      ...data,
+      search: data.search || '',
+      category: data.category || '',
+      tag: data.tag || '',
+      status: data.status || '',
+    })
+
   }
 
   if (isLoading) return 'Cargando...'
@@ -69,12 +99,50 @@ export default function PostView() {
           </Link>
         </Header>
 
-        <SearchComponent
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          searchFields={['Titulo']}
+        <FilterForm<PostFilter>
+          defaultValues={defaultValues}
+          onSubmit={onSubmit}
           placeholder="Buscar articulo..."
-        />
+        >
+          {(register) => (
+            <>
+              <div>
+                <label htmlFor="category"><small>Categoria</small></label>
+                <select id="category" {...register("category")} className="select-filter">
+                  <option value="">Todos</option>
+                  {data.categories.map((category) => (
+                    <option key={category.name} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="tag"><small>Etiqueta</small></label>
+                <select id="tag" {...register("tag")} className="select-filter">
+                  <option value="">Todos</option>
+                  {data.tags.map((tag) => (
+                    <option key={tag.name} value={tag.name}>
+                      {tag.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="status"><small>Estado</small></label>
+                <select id="status" {...register("status")} className="select-filter">
+                  <option value="">Todos</option>
+                  {postStatusSchema.options.map((status) => (
+                    <option key={status} value={status}>
+                      {postStatus[status]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
+
+        </FilterForm>
 
         <Table columns={colsPosts} >
           {paginatedItems.map((post, index) => (

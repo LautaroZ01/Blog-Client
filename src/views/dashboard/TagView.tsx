@@ -1,13 +1,11 @@
 import { getTagsDashboard } from "@/API/TagAPI"
 import { usePagination } from "@/hooks/usePagination"
-import { useSearch } from "@/hooks/useSearch"
 import Header from "@/components/dashboard/Header";
 import { Column } from "@/types/postType"
 import { ITEMS_PER_PAGE } from "@/utils/dashboardUtil"
 import { useQuery } from "@tanstack/react-query"
 import { FaPlus } from "react-icons/fa"
 import { useNavigate } from "react-router-dom"
-import { SearchComponent } from "@/components/ui/SeachComponent";
 import Table from "@/components/dashboard/Table";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { Pagination } from "@/components/ui/Pagination";
@@ -29,17 +27,12 @@ export default function TagView() {
         retry: false
     })
 
-    const { searchTerm, setSearchTerm, filteredData } = useSearch(
-        data || [],
-        ['name', 'slug']
-    );
-
     const {
         currentPage,
         setCurrentPage,
         totalPages,
         paginatedItems,
-    } = usePagination(filteredData, ITEMS_PER_PAGE);
+    } = usePagination(data || [], ITEMS_PER_PAGE);
 
     if (isLoading) return 'Cargando...'
 
@@ -59,13 +52,6 @@ export default function TagView() {
                         Agregar
                     </button>
                 </Header>
-
-                <SearchComponent
-                    searchTerm={searchTerm}
-                    onSearchChange={setSearchTerm}
-                    searchFields={['Nombre', 'Slug']}
-                    placeholder="Buscar etiquetas..."
-                />
 
                 <Table columns={colsTag} >
                     {paginatedItems.map((tag, index) => (
