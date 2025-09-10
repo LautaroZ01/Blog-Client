@@ -149,7 +149,9 @@ export type Post = z.infer<typeof postSchema>
 export type PostEdit = z.infer<typeof postEditSchema>
 export type Posts = z.infer<typeof postsSchema>
 export type PostFormType = z.infer<typeof postFormSchema>;
+
 export type PostFilter = z.infer<typeof postFilterSchema>;
+export type AnyFilter = Pick<PostFilter, 'search'>
 
 export const commentStructure = z.object({
     _id: z.string(),

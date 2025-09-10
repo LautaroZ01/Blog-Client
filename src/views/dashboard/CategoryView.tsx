@@ -4,17 +4,21 @@ import DeleteCategory from "@/components/dashboard/category/DeleteCategory";
 import EditCategory from "@/components/dashboard/category/EditCategory";
 import Header from "@/components/dashboard/Header";
 import Table from "@/components/dashboard/Table";
+import { FilterForm } from "@/components/ui/FilterForm";
 import { Pagination } from "@/components/ui/Pagination";
 import { usePagination } from "@/hooks/usePagination";
-import type { Column } from "@/types/postType";
+import type { AnyFilter, Column } from "@/types/postType";
 import { ITEMS_PER_PAGE } from "@/utils/dashboardUtil";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { MdDelete, MdModeEdit } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function CategoryView() {
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+
   const colsCategory: Column[] = [
     { label: 'Nombre' },
     { label: 'Descripcion' },
@@ -22,9 +26,18 @@ export default function CategoryView() {
     { label: 'Posts' },
   ]
 
+  const defaultValues: AnyFilter = useMemo(
+    () => ({
+      search: searchParams.get("search") || "",
+    }),
+    [searchParams]
+  )
+
+  const [filter, setFilter] = useState<AnyFilter>(defaultValues)
+
   const { data, isLoading } = useQuery({
-    queryKey: ['categoriesDashboard'],
-    queryFn: getCategoriesDashboard,
+    queryKey: ['categoriesDashboard', filter],
+    queryFn: () => getCategoriesDashboard(filter),
     retry: false
   })
 
@@ -35,6 +48,19 @@ export default function CategoryView() {
     totalPages,
     paginatedItems,
   } = usePagination(data || [], ITEMS_PER_PAGE);
+
+  const onSubmit = (data: AnyFilter) => {
+    const params: Record<string, string> = {}
+
+    if (data.search) params.search = data.search
+
+    setSearchParams(params)
+
+    setFilter({
+      ...data,
+      search: data.search || ''
+    })
+  }
 
   if (isLoading) return 'Cargando...'
 
@@ -54,6 +80,8 @@ export default function CategoryView() {
             Agregar
           </button>
         </Header>
+
+        <FilterForm defaultValues={defaultValues} onSubmit={onSubmit} isActiveFilter={false} />
 
         <Table columns={colsCategory} >
           {paginatedItems.map((category, index) => (

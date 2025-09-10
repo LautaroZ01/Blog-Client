@@ -12,13 +12,15 @@ type FilterFormProps<T extends BaseFilter> = {
     onSubmit: (data: T) => void
     children?: (register: UseFormRegister<T>) => ReactNode
     placeholder?: string
+    isActiveFilter?: boolean
 }
 
 export function FilterForm<T extends FieldValues>({
     defaultValues,
     onSubmit,
     children,
-    placeholder = "Buscar..."
+    placeholder = "Buscar...",
+    isActiveFilter = true
 }: FilterFormProps<T>) {
 
     const { register, handleSubmit } = useForm<T>({
@@ -45,14 +47,16 @@ export function FilterForm<T extends FieldValues>({
                 </div>
             </div>
 
-            <Filter>
-                {children && (
-                    <div className="flex gap-4 items-end">
-                        {children(register)}
-                        <button type="submit" className="btn-secundary">Filtrar</button>
-                    </div>
-                )}
-            </Filter>
+            {isActiveFilter && (
+                <Filter>
+                    {children && (
+                        <div className="flex gap-4 items-end">
+                            {children(register)}
+                            <button type="submit" className="btn-secundary">Filtrar</button>
+                        </div>
+                    )}
+                </Filter>
+            )}
         </form>
     )
 }

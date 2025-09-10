@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { Tag, TagFormType, tagSchema, tagsSchema } from "@/types/postType";
+import { AnyFilter, Tag, TagFormType, tagSchema, tagsSchema } from "@/types/postType";
 import { isAxiosError } from "axios";
 
 type TagAPI = {
@@ -22,9 +22,9 @@ export async function getTags() {
     }
 }
 
-export async function getTagsDashboard() {
+export async function getTagsDashboard(filter: AnyFilter) {
     try {
-        const { data } = await api.get('/dashboard/tag');
+        const { data } = await api.get('/dashboard/tag', { params: filter });
         const response = tagsSchema.safeParse(data);
 
         if (response.success) {
