@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { AnyFilter, categoriesSchema, Category, CategoryFormType, categorySchema } from "@/types/postType";
+import { AnyFilter, categoriesDashboardSchema, categoriesSchema, Category, CategoryFormType, categorySchema } from "@/types/postType";
 import { isAxiosError } from "axios";
 
 type CategoryAPI = {
@@ -25,7 +25,7 @@ export async function getCategories() {
 export async function getCategoriesDashboard(filter: AnyFilter) {
     try {
         const { data } = await api.get('/dashboard/category', { params: filter });
-        const response = categoriesSchema.safeParse(data);
+        const response = categoriesDashboardSchema.safeParse(data);
 
         if (response.success) {
             return response.data;

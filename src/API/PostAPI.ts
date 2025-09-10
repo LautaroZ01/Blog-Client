@@ -22,7 +22,6 @@ export async function getPostDashboard(filter: PostFilter) {
     try {
         const { data } = await api.get('/dashboard/post', { params: filter });
         const response = postsDashboardSchema.safeParse(data);
-        console.log(response)
 
         if (response.success) {
             return response.data;

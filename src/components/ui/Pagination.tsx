@@ -1,66 +1,44 @@
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md"
 
 type PaginationProps = {
-    currentPage: number
+    page: number
     totalPages: number
-    onPageChange: (page: number) => void
-};
+    onPageChange: (newPage: number) => void
+}
 
-export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
-    const getVisiblePages = () => {
-        const visiblePages = [];
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, currentPage + 2);
+export default function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
 
-        if (currentPage <= 3) {
-            endPage = Math.min(5, totalPages);
-        } else if (currentPage >= totalPages - 2) {
-            startPage = Math.max(totalPages - 4, 1);
-        }
-
-        for (let i = startPage; i <= endPage; i++) {
-            visiblePages.push(i);
-        }
-
-        return visiblePages;
-    };
-
-    const visiblePages = getVisiblePages();
-
-    if (totalPages <= 1) return null;
+    if(totalPages === 1) return null
 
     return (
-        <div className="flex items-center justify-center gap-2 mt-8">
+        <div className="flex justify-center mt-4 gap-4">
             <button
-                onClick={() => onPageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="p-2 rounded-md hover:bg-gray-100 disabled:opacity-30 cursor-pointer"
-                aria-label="Página anterior"
+                disabled={page === 1}
+                onClick={() => onPageChange(page - 1)}
+                className="btn-page"
             >
-                <FiChevronLeft />
+                <MdKeyboardArrowLeft size={20} />
             </button>
 
-            {visiblePages.map((page) => (
+            {pages.map((p) => (
                 <button
-                    key={page}
-                    onClick={() => onPageChange(page)}
-                    className={`size-8 rounded-md cursor-pointer ${currentPage === page
-                            ? 'bg-primary-400 text-white'
-                            : 'hover:bg-gray-100'
+                    key={p}
+                    onClick={() => onPageChange(p)}
+                    className={`font-semibold px-4 rounded-lg cursor-pointer transition-colors duration-pro ${page === p ? "text-primary-400 bg-primary-500/10" : " hover:bg-gray-500/10 text-gray-500"
                         }`}
                 >
-                    {page}
+                    <p>{p}</p>
                 </button>
             ))}
 
             <button
-                onClick={() => onPageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="p-2 rounded-md hover:bg-gray-100 disabled:opacity-30 cursor-pointer"
-                aria-label="Página siguiente"
+                disabled={page === totalPages}
+                onClick={() => onPageChange(page + 1)}
+                className="btn-page"
             >
-                <FiChevronRight />
+                <MdKeyboardArrowRight size={20} />
             </button>
         </div>
-    );
+    )
 }

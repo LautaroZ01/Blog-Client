@@ -149,6 +149,10 @@ h3 {
     @apply p-2 text-gray-400 text-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-red-400 hover:text-white transition-all duration-pro;
 }
 
+.btn-page{
+    @apply p-2 rounded-lg text-primary-500 cursor-pointer hover:bg-primary-500/10 transition-colors duration-pro disabled:text-gray-400 disabled:cursor-default disabled:hover:bg-transparent;
+}
+
 .link-dashboard {
     @apply flex items-center gap-2 p-2 justify-center sm:justify-start rounded transition-colors duration-200 relative;
 }

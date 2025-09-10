@@ -40,7 +40,8 @@ export const userSchema = z.object({
 export const userFilterSchema = z.object({
     role: z.string().optional(),
     status: z.string().optional(),
-    search: z.string().optional()
+    search: z.string().optional(),
+    page: z.number().optional().default(1)
 })
 
 export const profileSchema = userSchema.pick({

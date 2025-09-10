@@ -1,12 +1,10 @@
 import { getAllUsers } from "@/API/UserAPI"
 import { Column } from "@/types/postType"
-import { usePagination } from "@/hooks/usePagination"
 import { useQuery } from "@tanstack/react-query"
-import { ITEMS_PER_PAGE, roleColor, statusColor } from "@/utils/dashboardUtil"
+import { roleColor, statusColor } from "@/utils/dashboardUtil"
 import { Link, useSearchParams } from "react-router-dom"
 import { FaComments } from "react-icons/fa"
 import Header from "@/components/dashboard/Header"
-import { Pagination } from "@/components/ui/Pagination"
 import Table from "@/components/dashboard/Table"
 import { MdDelete, MdModeEdit } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
@@ -19,6 +17,7 @@ import DeleteUserModal from "@/components/dashboard/user/DeleteUserModal"
 import { UserFilter, userRoles, userStatusSchema } from "@/types/userType"
 import { useMemo, useState } from "react"
 import { FilterForm } from "@/components/ui/FilterForm"
+import Pagination from "@/components/ui/Pagination"
 
 export default function UserView() {
   const navigate = useNavigate()
@@ -36,6 +35,7 @@ export default function UserView() {
       role: searchParams.get("role") || "",
       status: searchParams.get("status") || "",
       search: searchParams.get("search") || "",
+      page: parseInt(searchParams.get("page") || "1", 10)
     }),
     [searchParams]
   )
@@ -47,33 +47,36 @@ export default function UserView() {
     queryFn: () => getAllUsers(filter)
   })
 
-  const {
-    currentPage,
-    setCurrentPage,
-    totalPages,
-    paginatedItems,
-  } = usePagination(data || [], ITEMS_PER_PAGE);
-
   const onSubmit = (data: UserFilter) => {
     const params: Record<string, string> = {}
 
     if (data.role) params.role = data.role
     if (data.status) params.status = data.status
     if (data.search) params.search = data.search
+    if (data.page) params.page = "1"
 
     setSearchParams(params)
-    
+
     setFilter({
       ...data,
       role: data.role || '',
       status: data.status || '',
-      search: data.search || ''
+      search: data.search || '',
+      page: data.page || 1
+    })
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setFilter((prev) => ({ ...prev, page: newPage }))
+    setSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      page: String(newPage),
     })
   }
 
   if (isLoading) return 'Cargando...'
 
-  if (data && paginatedItems) return (
+  if (data) return (
     <>
       <Header
         title="Usuarios"
@@ -118,7 +121,7 @@ export default function UserView() {
       </FilterForm>
 
       <Table columns={colsUsers}>
-        {paginatedItems.length > 0 ? paginatedItems.map((user, index) => (
+        {data.users.length > 0 ? data.users.map((user, index) => (
           <tr className="bg-white border-b border-gray-200" key={index}>
             <td className="px-6 py-4">
               {index += 1}
@@ -197,11 +200,10 @@ export default function UserView() {
         )}
       </Table>
 
-
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
+        page={data.pagination.page}
+        totalPages={data.pagination.totalPages}
+        onPageChange={handlePageChange}
       />
 
       <UserDetail />

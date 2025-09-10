@@ -1,6 +1,12 @@
 import { z } from "zod";
 import { authorSchema } from "./userType";
 
+const paginationSchema = z.object({
+    total: z.number(),
+    page: z.number(),
+    totalPages: z.number()
+})
+
 export const postStatusSchema = z.enum(['draft', 'published', 'archived'])
 
 export type Column = {
@@ -16,6 +22,12 @@ export const categorySchema = z.object({
 })
 
 export const categoriesSchema = z.array(categorySchema)
+
+export const categoriesDashboardSchema = z.object({
+    categories: categoriesSchema,
+    pagination: paginationSchema
+})
+
 export type Category = z.infer<typeof categorySchema>
 export type Categories = z.infer<typeof categoriesSchema>
 
@@ -31,6 +43,12 @@ export const tagSchema = z.object({
 })
 
 export const tagsSchema = z.array(tagSchema)
+
+export const tagsDashboardSchema = z.object({
+    tags: tagsSchema,
+    pagination: paginationSchema
+})
+
 export type Tag = z.infer<typeof tagSchema>
 export type Tags = z.infer<typeof tagsSchema>
 
@@ -125,7 +143,8 @@ export const postFilterSchema = z.object({
     search: z.string().optional(),
     category: z.string().optional(),
     tag: z.string().optional(),
-    status: z.string().optional()
+    status: z.string().optional(),
+    page: z.number().optional().default(1)
 })
 
 export type PostView = z.infer<typeof postViewSchema>
@@ -142,7 +161,8 @@ export const postsDashboardSchema = z.object({
     tags: z.array(tagSchema.pick({
         _id: true,
         name: true
-    }))
+    })),
+    pagination: paginationSchema
 })
 
 export type Post = z.infer<typeof postSchema>
@@ -151,7 +171,7 @@ export type Posts = z.infer<typeof postsSchema>
 export type PostFormType = z.infer<typeof postFormSchema>;
 
 export type PostFilter = z.infer<typeof postFilterSchema>;
-export type AnyFilter = Pick<PostFilter, 'search'>
+export type AnyFilter = Pick<PostFilter, 'search' | 'page'>
 
 export const commentStructure = z.object({
     _id: z.string(),

@@ -1,10 +1,7 @@
 import { getPostDashboard } from "@/API/PostAPI"
 import Header from "@/components/dashboard/Header"
 import Table from "@/components/dashboard/Table"
-import { Pagination } from "@/components/ui/Pagination"
-import { usePagination } from "@/hooks/usePagination"
 import { Column, PostFilter, postStatusSchema } from "@/types/postType"
-import { ITEMS_PER_PAGE } from "@/utils/dashboardUtil"
 import { useQuery } from "@tanstack/react-query"
 import { FaPlus, FaComments, FaEye, FaHeart } from "react-icons/fa"
 import { MdDelete, MdModeEdit } from "react-icons/md"
@@ -16,6 +13,7 @@ import CommentListByPostId from "@/components/dashboard/post/comment/CommentList
 import { useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { FilterForm } from "@/components/ui/FilterForm"
+import Pagination from "@/components/ui/Pagination"
 
 export default function PostView() {
   const navigate = useNavigate()
@@ -34,6 +32,7 @@ export default function PostView() {
       category: searchParams.get("category") || "",
       tag: searchParams.get("tag") || "",
       status: searchParams.get("status") || "",
+      page: parseInt(searchParams.get("page") || "1", 10)
     }),
     [searchParams]
   )
@@ -45,13 +44,6 @@ export default function PostView() {
     queryFn: () => getPostDashboard(filter),
     retry: false
   })
-
-  const {
-    currentPage,
-    setCurrentPage,
-    totalPages,
-    paginatedItems,
-  } = usePagination(data?.posts || [], ITEMS_PER_PAGE);
 
   const statusColor = {
     draft: 'bg-yellow-100 text-yellow-800',
@@ -75,136 +67,142 @@ export default function PostView() {
       category: data.category || '',
       tag: data.tag || '',
       status: data.status || '',
+      page: data.page || 1
     })
 
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setFilter((prev) => ({ ...prev, page: newPage }))
+    setSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      page: String(newPage),
+    })
   }
 
   if (isLoading) return 'Cargando...'
 
 
-  if (data && paginatedItems) return (
+  if (data) return (
     <>
-      <section>
-        <Header
-          title="Articulos"
-          subtitleA="Esta es la vista de articulos,"
-          subtitleB="aquí puede administrar los articulos."
+      <Header
+        title="Articulos"
+        subtitleA="Esta es la vista de articulos,"
+        subtitleB="aquí puede administrar los articulos."
+      >
+        <Link
+          to='/dashboard/post/create'
+          className="btn-primary flex items-center gap-2"
         >
-          <Link
-            to='/dashboard/post/create'
-            className="btn-primary flex items-center gap-2"
-          >
-            <FaPlus />
-            Agregar
-          </Link>
-        </Header>
+          <FaPlus />
+          Agregar
+        </Link>
+      </Header>
 
-        <FilterForm<PostFilter>
-          defaultValues={defaultValues}
-          onSubmit={onSubmit}
-          placeholder="Buscar articulo..."
-        >
-          {(register) => (
-            <>
-              <div>
-                <label htmlFor="category"><small>Categoria</small></label>
-                <select id="category" {...register("category")} className="select-filter">
-                  <option value="">Todos</option>
-                  {data.categories.map((category) => (
-                    <option key={category.name} value={category.name}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label htmlFor="tag"><small>Etiqueta</small></label>
-                <select id="tag" {...register("tag")} className="select-filter">
-                  <option value="">Todos</option>
-                  {data.tags.map((tag) => (
-                    <option key={tag.name} value={tag.name}>
-                      {tag.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label htmlFor="status"><small>Estado</small></label>
-                <select id="status" {...register("status")} className="select-filter">
-                  <option value="">Todos</option>
-                  {postStatusSchema.options.map((status) => (
-                    <option key={status} value={status}>
-                      {postStatus[status]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </>
-          )}
+      <FilterForm<PostFilter>
+        defaultValues={defaultValues}
+        onSubmit={onSubmit}
+        placeholder="Buscar articulo..."
+      >
+        {(register) => (
+          <>
+            <div>
+              <label htmlFor="category"><small>Categoria</small></label>
+              <select id="category" {...register("category")} className="select-filter">
+                <option value="">Todos</option>
+                {data.categories.map((category) => (
+                  <option key={category.name} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="tag"><small>Etiqueta</small></label>
+              <select id="tag" {...register("tag")} className="select-filter">
+                <option value="">Todos</option>
+                {data.tags.map((tag) => (
+                  <option key={tag.name} value={tag.name}>
+                    {tag.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="status"><small>Estado</small></label>
+              <select id="status" {...register("status")} className="select-filter">
+                <option value="">Todos</option>
+                {postStatusSchema.options.map((status) => (
+                  <option key={status} value={status}>
+                    {postStatus[status]}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </>
+        )}
 
-        </FilterForm>
+      </FilterForm>
 
-        <Table columns={colsPosts} >
-          {paginatedItems.map((post, index) => (
-            <tr className="bg-white border-b border-gray-200" key={index}>
-              <td className="px-6 py-4">
-                {index += 1}
-              </td>
-              <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex flex-col gap-2">
-                {post.title}
-                <small className="text-gray-500">
-                  {post.createdAt && formatDate(post.createdAt?.toString())}
-                </small>
-              </th>
-              <td className="px-6 py-4">
-                {post.category.name}
-              </td>
-              <td className="px-6 py-4 mt-6 flex items-center gap-4">
-                <Link to={`/dashboard/post?postId=${post._id}`}>
-                  <span className="text-gray-500 flex items-center gap-2 hover:text-accent-200 transition-colors duration-pro">
-                    <FaComments className="" />
-                    {post.comments.length}
-                  </span>
-                </Link>
-                <span className="flex items-center gap-2">
-                  <FaHeart className="text-gray-500" />
-                  {post.likes.length}
+      <Table columns={colsPosts} >
+        {data.posts.map((post, index) => (
+          <tr className="bg-white border-b border-gray-200" key={index}>
+            <td className="px-6 py-4">
+              {index += 1}
+            </td>
+            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex flex-col gap-2">
+              {post.title}
+              <small className="text-gray-500">
+                {post.createdAt && formatDate(post.createdAt?.toString())}
+              </small>
+            </th>
+            <td className="px-6 py-4">
+              {post.category.name}
+            </td>
+            <td className="px-6 py-4 mt-6 flex items-center gap-4">
+              <Link to={`/dashboard/post?postId=${post._id}`}>
+                <span className="text-gray-500 flex items-center gap-2 hover:text-accent-200 transition-colors duration-pro">
+                  <FaComments className="" />
+                  {post.comments.length}
                 </span>
-                <span className="flex items-center gap-2">
-                  <FaEye className="text-gray-500" />
-                  {post.viewCount}
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <small className={`${statusColor[post.status]} badget-dashboard`}>
-                  {postStatus[post.status]}
-                </small>
-              </td>
-              <td className="px-6 py-4 flex items-center justify-end gap-2">
-                <Link
-                  to={`/dashboard/post/edit/${post._id}`}
-                  className="btn-rounded"
-                >
-                  <MdModeEdit />
-                </Link>
-                <button
-                  className="btn-rounded-delete"
-                  onClick={() => navigate(`${location.pathname}?deletePost=${post._id}`)}
-                >
-                  <MdDelete />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </Table>
+              </Link>
+              <span className="flex items-center gap-2">
+                <FaHeart className="text-gray-500" />
+                {post.likes.length}
+              </span>
+              <span className="flex items-center gap-2">
+                <FaEye className="text-gray-500" />
+                {post.viewCount}
+              </span>
+            </td>
+            <td className="px-6 py-4">
+              <small className={`${statusColor[post.status]} badget-dashboard`}>
+                {postStatus[post.status]}
+              </small>
+            </td>
+            <td className="px-6 py-4 flex items-center justify-end gap-2">
+              <Link
+                to={`/dashboard/post/edit/${post._id}`}
+                className="btn-rounded"
+              >
+                <MdModeEdit />
+              </Link>
+              <button
+                className="btn-rounded-delete"
+                onClick={() => navigate(`${location.pathname}?deletePost=${post._id}`)}
+              >
+                <MdDelete />
+              </button>
+            </td>
+          </tr>
+        ))}
+      </Table>
 
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-
-      </section>
+      <Pagination
+        page={data.pagination.page}
+        totalPages={data.pagination.totalPages}
+        onPageChange={handlePageChange}
+      />
       <DeletePostModal />
       <CommentListByPostId />
     </>

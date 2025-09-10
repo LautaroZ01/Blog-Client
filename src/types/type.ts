@@ -43,5 +43,16 @@ export const userDashboardSchema = userSchema.pick({
     createdAt: z.string().transform((value) => new Date(value))
 })
 
+export const paginationSchema = z.object({
+    total: z.number(),
+    page: z.number(),
+    totalPages: z.number()
+})
+
+export const userDashboardPaginationSchema = z.object({
+    users: usersDashboardSchema,
+    pagination: paginationSchema
+})
+
 export type UsersDashboard = z.infer<typeof usersDashboardSchema>
 export type UserDashboard = z.infer<typeof userDashboardSchema>
