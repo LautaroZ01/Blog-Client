@@ -1,5 +1,4 @@
 import { getTags } from "@/API/TagAPI";
-import CloseModal from "@/components/ui/CloseModal";
 import Modal from "@/components/ui/Modal";
 import { Tag, Tags } from "@/types/postType";
 import { useQuery } from "@tanstack/react-query";
@@ -27,8 +26,7 @@ export default function TagList({ selectedTags, onTagSelect }: TagListProps) {
     if (isLoading) return 'Cargando...'
 
     if (data) return (
-        <Modal>
-            <CloseModal title="Selecciona las etiquetas" />
+        <Modal title="Selecciona las etiquetas">
 
             <div className="grid grid-cols-4 gap-4 mt-4 min-w-xl py-4 px-2">
                 {data?.map(tag => (

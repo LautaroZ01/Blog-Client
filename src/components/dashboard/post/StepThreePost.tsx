@@ -66,7 +66,7 @@ export default function StepThreePost({
                         {categories && (
                             <select
                                 id="category"
-                                className="input-data capitalize"
+                                className="input-data capitalize mr-4 cursor-pointer"
                                 {...register("category", {
                                     required: "El tipo es obligatorio",
                                 })}

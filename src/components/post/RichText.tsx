@@ -58,7 +58,7 @@ function TiptapEditor({ onChange, content }: { onChange: (content: string) => vo
             </div>
             <div className="flex flex-col p-3 form-data">
                 <Toolbar editor={editor} />
-                <EditorContent editor={editor} className="input-data rich-text-style m-4" />
+                <EditorContent editor={editor} className="prose m-4 min-w-full" />
             </div>
         </>
     )

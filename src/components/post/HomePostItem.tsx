@@ -71,7 +71,7 @@ export default function HomePostItem({ post, index }: HomePostItemProps) {
                 )}
                 {post.content && (
                     <div
-                        className="text-sm line-clamp-2 my-2"
+                        className="text-sm prose prose-invert line-clamp-2 my-2"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     />
                 )}

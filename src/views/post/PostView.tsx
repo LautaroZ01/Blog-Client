@@ -61,7 +61,7 @@ export default function PostView({ post }: PostViewProps) {
 
                 {post.content && (
                     <div
-                        className="max-w-[75ch] mt-8 mx-auto text-gray-600 rich-text-style border-t border-gray-300 pt-4"
+                        className="max-w-[80ch] mt-8 mx-auto prose border-t border-gray-300 pt-4"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     />
                 )}
