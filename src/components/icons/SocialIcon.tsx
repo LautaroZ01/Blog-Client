@@ -16,7 +16,8 @@ import { z } from "zod";
 type SocialIconProps = {
   name?: z.infer<typeof socialNetworksTypeSchema> | z.infer<typeof contactsTypeSchema>;
   size: 'big' | 'normal' | 'small'
-  color?: string;
+  color?: string
+  className?: string
 }
 
 const SocialIcons = [
@@ -72,7 +73,7 @@ const SocialIcons = [
   }
 ];
 
-export default function SocialIcon({ name, size = 'small', color }: SocialIconProps) {
+export default function SocialIcon({ name, size = 'small', color, className = '' }: SocialIconProps) {
   const iconData = SocialIcons.find(item => item.name === name);
   const sizeClass = size === 'big' ? 'size-26' : size === 'normal' ? 'size-10' : 'size-6';
 
@@ -86,7 +87,7 @@ export default function SocialIcon({ name, size = 'small', color }: SocialIconPr
 
   return (
     <IconComponent
-      className={`${sizeClass} ${colorClass}`}
+      className={`${sizeClass} ${colorClass} ${className}`}
     />
   );
 }

@@ -35,7 +35,7 @@ export default function Header() {
   }
 
   return (
-    <header className="container-blog flex items-center justify-between sticky top-0 backdrop-blur-xl p-2 z-50 bg-white/50 drop-shadow-xl rounded-md">
+    <header className="container-blog flex items-center justify-between sticky top-0 backdrop-blur-xl p-2 z-50 bg-white/50 drop-shadow-xl rounded-lg">
       <Link to={'/'} className="flex items-center gap-2 hover:text-primary-500">
         <div className="size-10">
           <img src="/Logo-blog.png" alt="Logo de blog" className="w-full" />

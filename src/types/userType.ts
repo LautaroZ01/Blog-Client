@@ -111,6 +111,21 @@ export const authSchema = userSchema.pick({
     token: z.string()
 })
 
+export const writerInfoSchema = userSchema.pick({
+    _id: true,
+    email: true,
+    name: true,
+    lastname: true,
+    photo: true
+}).merge(
+    writerSchema.pick({
+        socialNetworks: true,
+        contacts: true,
+        bio: true,
+        nickname: true
+    })
+);
+
 export type CountryType = {
     name: string;
     code: string;
@@ -143,3 +158,5 @@ export type EditRoleForm = Pick<User, 'role'>
 export type WriterForm = Pick<Writer, 'bio' | 'nickname'>
 export type SocialNetworkForm = Pick<SocialNetwork, 'name' | 'type' | 'url'>
 export type ContactFormType = Pick<Contact, 'name' | 'type'>
+
+export type WriterProfile = z.infer<typeof writerInfoSchema>

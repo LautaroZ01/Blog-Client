@@ -10,7 +10,7 @@ export default function ChatLayout() {
     }
 
     if (!data) {
-        return <Navigate to={'/'} />
+        return <Navigate to={'/#contact'} />
     } else {
         return (
             <>

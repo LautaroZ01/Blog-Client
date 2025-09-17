@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { Contact, ContactFormType, SocialNetwork, SocialNetworkForm, socialProfileSchema, WriterForm, writerSchema } from "@/types/userType";
+import { Contact, ContactFormType, SocialNetwork, SocialNetworkForm, socialProfileSchema, WriterForm, writerInfoSchema, writerSchema } from "@/types/userType";
 import { isAxiosError } from "axios";
 
 export async function getProfile() {
@@ -120,6 +120,21 @@ export async function deleteContact(formData: Contact['_id']) {
         const { data } = await api.delete(`/writer/contact/${formData}`);
 
         return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function getWriteInfo(){
+    try {
+        const { data } = await api.get('/dashboard/writer');
+        const response = writerInfoSchema.safeParse(data);
+
+        if (response.success) {
+            return response.data;
+        }
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)
