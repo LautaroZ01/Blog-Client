@@ -99,7 +99,7 @@ h3 {
 }
 
 .input-data {
-    @apply w-full p-3 md:ml-2 focus:outline-none autofill:bg-white autofill:text-gray-800;
+    @apply w-full rounded-lg p-3 md:ml-2 focus:outline-none autofill:bg-white autofill:text-gray-800;
 }
 
 .input-profile {

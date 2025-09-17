@@ -8,7 +8,7 @@ type HeroSectionViewProps = {
 export default function HeroSectionView({ writerInfo }: HeroSectionViewProps) {
     return (
         <div className="h-[calc(100vh-8rem)] relative">
-            <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-radial-[at_70%_50%] from-primary-100 to-white to-50%"></div>
+            <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-radial-[at_70%_50%] from-primary-100/60 to-white to-50%"></div>
             <section className="container-blog flex flex-col items-center justify-center gap-4 h-full">
                 <AuthPhoto photo={writerInfo.photo} name={writerInfo.name} size="big" />
                 <div className="text-center">

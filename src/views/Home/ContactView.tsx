@@ -16,8 +16,8 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
     if(isLoading) return 'Cargando...'
     return (
         <>
-            <div className="absolute -z-10 size-full bg-white bg-radial-[ellipse_at_bottom] from-primary-100 to-white to-40%"></div>
-            <section className="container-blog my-4 flex flex-col items-center justify-center min-h-screen gap-4 relative" id="contact">
+            <section className="container-blog py-10 flex flex-col items-center justify-center min-h-screen gap-6 relative" id="contact">
+            <div className="absolute -z-10 size-full bg-white bg-radial-[ellipse_at_bottom] from-primary-100/60 to-white to-40%"></div>
                 <AiFillMessage className="size-20 text-primary-500" />
                 <h2 className="text-4xl font-bold text-gray-700 text-center">Ponte en contacto conmigo</h2>
                 <p className="text-gray-500 text-center max-w-[80ch] text-balance ">Si tienes alguna pregunta, sugerencia o simplemente quieres hablar, no dudes en ponerte en contacto conmigo.</p>
