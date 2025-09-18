@@ -126,6 +126,13 @@ export const writerInfoSchema = userSchema.pick({
     })
 );
 
+export const contactSchema = z.object({
+    email: z.string().email(),
+    name: z.string(),
+    subject: z.string(),
+    message: z.string()
+})
+
 export type CountryType = {
     name: string;
     code: string;
@@ -160,3 +167,4 @@ export type SocialNetworkForm = Pick<SocialNetwork, 'name' | 'type' | 'url'>
 export type ContactFormType = Pick<Contact, 'name' | 'type'>
 
 export type WriterProfile = z.infer<typeof writerInfoSchema>
+export type ContactForm = z.infer<typeof contactSchema>

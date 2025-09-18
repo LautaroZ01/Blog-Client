@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import { userDashboardPaginationSchema, userDashboardSchema } from "@/types/type";
-import { ChangePasswordForm, EditRoleForm, ProfileForm, profileSchema, User, UserFilter } from "@/types/userType";
+import { ChangePasswordForm, ContactForm, EditRoleForm, ProfileForm, profileSchema, User, UserFilter } from "@/types/userType";
 import { isAxiosError } from "axios";
 
 export async function getProfile() {
@@ -117,6 +117,18 @@ export async function deleteUser(userId: User['_id']){
     try {
         const { data } = await api.delete<string>(`/dashboard/user/${userId}`)
 
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function sendContactForm(formData: ContactForm) {
+    try {
+        const { data } = await api.post<string>('/auth/email', formData)
+        
         return data
     } catch (error) {
         if (isAxiosError(error) && error.response) {

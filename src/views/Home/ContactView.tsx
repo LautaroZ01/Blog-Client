@@ -1,23 +1,55 @@
+import { sendContactForm } from "@/API/UserAPI";
 import InputContainer from "@/components/auth/InputContainer";
 import SocialIcon from "@/components/icons/SocialIcon";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 import { useAuth } from "@/hooks/useAuth";
-import { WriterProfile } from "@/types/userType";
+import { ContactForm, WriterProfile } from "@/types/userType";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import { AiFillMessage } from "react-icons/ai";
 import { LuMail } from "react-icons/lu";
 import { MdOutlineSubject } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type ContactViewProps = {
     writerInfo: WriterProfile
 }
 
 export default function ContactView({ writerInfo }: ContactViewProps) {
-    const {data, isLoading} = useAuth()
-    if(isLoading) return 'Cargando...'
+    const { data, isLoading } = useAuth()
+
+    const defaultValues: ContactForm = {
+        email: '',
+        name: '',
+        subject: '',
+        message: ''
+    }
+
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<ContactForm>({
+        defaultValues
+    })
+
+    const { mutate } = useMutation({
+        mutationFn: sendContactForm,
+        onSuccess: (data) => {
+            toast.success(data)
+            reset()
+        },
+        onError: (error) => {
+            toast.error(error.message)
+        }
+    })
+
+    const sendMessage = (formData: ContactForm) => {
+        mutate(formData)
+    }
+
+    if (isLoading) return 'Cargando...'
     return (
         <>
             <section className="container-blog py-10 flex flex-col items-center justify-center min-h-screen gap-6 relative" id="contact">
-            <div className="absolute -z-10 size-full bg-white bg-radial-[ellipse_at_bottom] from-primary-100/60 to-white to-40%"></div>
+                <div className="absolute -z-10 size-full bg-white bg-radial-[ellipse_at_bottom] from-primary-100/60 to-white to-40%"></div>
                 <AiFillMessage className="size-20 text-primary-500" />
                 <h2 className="text-4xl font-bold text-gray-700 text-center">Ponte en contacto conmigo</h2>
                 <p className="text-gray-500 text-center max-w-[80ch] text-balance ">Si tienes alguna pregunta, sugerencia o simplemente quieres hablar, no dudes en ponerte en contacto conmigo.</p>
@@ -27,7 +59,7 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
                     </Link>
                 ) : (
                     <Link to={'/auth/login'} className="link-data">
-                        Puedes chatear conmigo si inicies sesion
+                        Puedes chatear si inicies sesion
                     </Link>
                 )}
                 <div className="flex items-center gap-4">
@@ -52,7 +84,10 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
                     ))}
                 </div>
 
-                <form className="flex flex-col gap-4 min-w-[600px] p-8 rounded-lg shadow-xl backdrop-blur-md mt-4">
+                <form
+                    onSubmit={handleSubmit(sendMessage)}
+                    className="flex flex-col gap-4 min-w-[600px] p-8 rounded-lg shadow-xl backdrop-blur-md mt-4"
+                >
                     <div className="flex gap-4">
                         <InputContainer>
                             <div className="form-data">
@@ -62,8 +97,20 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
                                     type="email"
                                     placeholder="Ingresa tu correo"
                                     className="input-data"
+                                    {...register('email',
+                                        {
+                                            required: 'El correo es obligatorio',
+                                            pattern: {
+                                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                message: 'El correo no es valido'
+                                            }
+                                        }
+                                    )}
                                 />
                             </div>
+                            {errors.email && (
+                                <ErrorMessage>{errors.email.message}</ErrorMessage>
+                            )}
                         </InputContainer>
                         <InputContainer>
                             <div className="form-data">
@@ -72,8 +119,16 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
                                     type="text"
                                     placeholder="Ingresa tu nombre"
                                     className="input-data"
+                                    {...register('name',
+                                        {
+                                            required: 'El nombre es obligatorio'
+                                        }
+                                    )}
                                 />
                             </div>
+                            {errors.name && (
+                                <ErrorMessage>{errors.name.message}</ErrorMessage>
+                            )}
                         </InputContainer>
                     </div>
                     <InputContainer>
@@ -84,11 +139,32 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
                                 type="text"
                                 placeholder="Ingresa el asunto"
                                 className="input-data"
+                                {...register('subject',
+                                    {
+                                        required: 'El asunto es obligatorio'
+                                    }
+                                )}
                             />
                         </div>
+                        {errors.subject && (
+                            <ErrorMessage>{errors.subject.message}</ErrorMessage>
+                        )}
                     </InputContainer>
                     <InputContainer>
-                        <textarea placeholder="Ingresa tu mensaje" className="border border-gray-300 p-4 rounded-md focus:outline-none" rows={4} />
+                        <textarea
+                            placeholder="Ingresa tu mensaje"
+                            className="border border-gray-300 p-4 rounded-md focus:outline-none"
+                            rows={4}
+                            id="message"
+                            {...register('message',
+                                {
+                                    required: 'El mensaje es obligatorio'
+                                }
+                            )}
+                        />
+                        {errors.message && (
+                            <ErrorMessage>{errors.message.message}</ErrorMessage>
+                        )}
                     </InputContainer>
                     <button type="submit" className="btn-primary mt-6">Enviar</button>
                 </form>

@@ -72,11 +72,10 @@ export default function CommentForm({ postId }: CommentFormProps) {
                     )
                 ) : (
                     <div className="flex items-center justify-end gap-2">
-                        <Link to="/auth/login" className="bg-red-100 text-red-800 p-2 rounded-md">Inicia sesión para comentar</Link>
+                        <Link to="/auth/login" className="link-data">Inicia sesión para comentar</Link>
                     </div>
                 )}
             </form>
-
         </div>
     )
 }
