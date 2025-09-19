@@ -45,7 +45,7 @@ export default function ChangePasswordView() {
             <form
                 onSubmit={handleSubmit(handleRegister)}
                 noValidate
-                className="w-full md:w-xl mx-auto space-y-4"
+                className="w-full md:w-xl mx-auto space-y-4 mb-6 px-2"
             >
                 <InputContainer>
                     <div className="form-data">

@@ -44,7 +44,7 @@ export default function SendMessageForm({ conversationId }: SendFormMessageProps
         <form
             onSubmit={handleSubmit(handleForm)}
             noValidate
-            className="px-10 py-4"
+            className="lg:px-10 px-2 py-4"
         >
             {errors.text && (
                 <ErrorMessage>{errors.text.message}</ErrorMessage>

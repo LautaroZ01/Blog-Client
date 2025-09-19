@@ -101,7 +101,7 @@ export default function ConversationsList({ conversations: initialConversations 
                 </Link>
             </div>
 
-            <div className="flex items-center justify-center lg:hidden">
+            <div className="flex items-center justify-center lg:hidden my-4">
                 <button className="btn-primary" onClick={() => setIsOpen(!isOpen)}>
                     Ver más
                 </button>

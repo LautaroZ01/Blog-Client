@@ -2,7 +2,7 @@ import { Post } from "@/types/postType";
 import { formatDate } from "@/utils/formatUtil";
 import AuthPhoto from "../auth/AuthPhoto";
 import { FaComment, FaCalendar, FaArrowRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LikePost from "./LikePost";
 
 type HomePostItemProps = {
@@ -11,6 +11,8 @@ type HomePostItemProps = {
 }
 
 export default function HomePostItem({ post, index }: HomePostItemProps) {
+
+    const navigate = useNavigate()
     return (
         <div
             key={post._id}
@@ -31,10 +33,10 @@ export default function HomePostItem({ post, index }: HomePostItemProps) {
 
             {index === 0 && (
                 <div className="p-4 z-10 flex justify-between items-center">
-                    <div className="flex items-center gap-4">
+                    <button onClick={() => navigate(`${location.pathname}?writerId=${post.author?._id}`)} className="flex items-center gap-4 group cursor-pointer">
                         <AuthPhoto photo={post.author?.photo || ''} name={post.author?.name || ''} size="small" />
                         <div>
-                            <div className="text-sm text-white font-semibold">
+                            <div className="text-sm text-white font-semibold text-left group-hover:text-primary-400 transition-colors duration-pro">
                                 {post.author?.name || 'Autor desconocido'}
                             </div>
                             <div className="text-xs text-gray-200 flex items-center gap-1">
@@ -42,7 +44,7 @@ export default function HomePostItem({ post, index }: HomePostItemProps) {
                                 {formatDate(post.createdAt?.toString() || '')}
                             </div>
                         </div>
-                    </div>
+                    </button>
                     <div className="flex items-center gap-2">
                         <span className="text-xs text-primary-50 border-primary-700 border rounded-full px-2 py-1 inline-flex items-center gap-1 bg-primary-800">
                             {post.category?.name || 'Sin categoría'}

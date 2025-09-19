@@ -38,7 +38,7 @@ export default function AddContactModal() {
         <Modal title='Agregar contacto'>
             <form
                 onSubmit={handleSubmit(handleAdd)}
-                className='px-2 min-w-md mt-4 space-y-4'
+                className='px-2 lg:min-w-md mt-4 space-y-4'
             >
                 <ContactForm register={register} errors={errors} />
 

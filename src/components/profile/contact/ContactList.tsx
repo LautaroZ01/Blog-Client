@@ -45,7 +45,7 @@ export default function ContactList({ contacts }: ContactListProps) {
                 </button>
             </div>
             {contacts.length > 0 ? (
-                <div className="grid grid-cols-3">
+                <div className="grid lg:grid-cols-3">
                     {contacts.map(contact => (
                         <ContactItem key={contact._id} contact={contact} />
                     ))}

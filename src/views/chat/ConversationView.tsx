@@ -25,7 +25,7 @@ export default function ConversationView() {
   if (data && data.length > 0) {
     return (
       <section className="">
-        <div className="container-blog lg:flex gap-4 min-h-[calc(100vh-48px)] max-h-[calc(100vh-48px)] pt-4">
+        <div className="container-blog lg:flex gap-4 min-h-[calc(100vh-56px)] pt-4">
           <ConversationsList conversations={data} />
           <MessagesView />
         </div>

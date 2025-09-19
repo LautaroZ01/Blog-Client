@@ -45,7 +45,7 @@ export default function SocialList({ socialList }: SocialListProps) {
                 </button>
             </div>
             {socialList.length > 0 ? (
-                <div className="grid grid-cols-3">
+                <div className="grid lg:grid-cols-3">
                     {socialList.map(social => (
                         <SocialItem key={social._id} social={social} />
                     ))}

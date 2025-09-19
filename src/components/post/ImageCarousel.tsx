@@ -87,7 +87,7 @@ export default function ImageCarousel({ images, category }: ImageCarouselProps) 
                         <img
                             src={image}
                             alt={`Slide ${index + 1}`}
-                            className="w-full h-full object-cover aspect-video"
+                            className="w-full h-full lg:object-cover object-contain aspect-video"
                             draggable="false"
                         />
                     </div>

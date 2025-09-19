@@ -86,11 +86,11 @@ export default function CommentItem({ comment, postId }: CommentItemProps) {
                 {data &&
                 <div className="flex items-center gap-2">
                     {data.role !== 'user' && comment.status && <button onClick={() => handleChangeCommentStatus(comment._id)} className="bg-accent-50 text-accent-600 p-1 rounded-full font-bold cursor-pointer"><small>{commentStatus[comment.status]}</small></button>}
-                    <OptionsComment commentId={comment._id} authorId={comment.author?._id} postId={postId} editFunction={() => setShowEdit(!showEdit)} reports={comment.reports} />
+                    <OptionsComment commentId={comment._id} authorId={comment.author!._id} postId={postId} editFunction={() => setShowEdit(!showEdit)} reports={comment.reports} />
                 </div>
                 }
             </div>
-            <div className="px-12 py-4 my-2">
+            <div className="lg:px-12 p-4 lg:py-4 my-2">
                 {showEdit ? (
                     <form
                         onSubmit={handleSubmit(handleUpdateComment)}
@@ -104,7 +104,7 @@ export default function CommentItem({ comment, postId }: CommentItemProps) {
                         </div>
                     </form>
                 ) : (
-                    <p className="text-balance">{comment.content}</p>
+                    <p className="text-balance prose">{comment.content}</p>
                 )}
             </div>
             {data && !showEdit &&
@@ -121,7 +121,7 @@ export default function CommentItem({ comment, postId }: CommentItemProps) {
                 <ReplyForm commentId={comment._id} postId={postId} setShowReplies={setShowReplies} data={data} />
             )}
             {comment.replies && comment.replies.length > 0 && (
-                <div className="mt-6 ml-10 p-4 rounded-md bg-gray-50 inset-shadow-2xs">
+                <div className="mt-6 lg:ml-10 p-4 rounded-md bg-gray-50 inset-shadow-2xs">
                     <RepliesList replies={comment.replies} postId={postId} />
                 </div>
             )}

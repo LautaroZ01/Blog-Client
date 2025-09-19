@@ -20,7 +20,7 @@ export default function MessagesList({ messages, userId }: MessagesListProps) {
     }, [messages]); // Se ejecuta cada vez que `messages` cambia
 
     return (
-        <div ref={messagesContainerRef} className="grow flex flex-col overflow-y-auto rounded-lg gap-2 px-10">
+        <div ref={messagesContainerRef} className="grow flex flex-col overflow-y-auto rounded-lg gap-2 px-2 lg:px-10">
             {messages.length > 0 ? (
                 messages.map((message) => (
                     message.sender && (

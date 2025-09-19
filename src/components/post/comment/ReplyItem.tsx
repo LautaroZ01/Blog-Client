@@ -80,11 +80,11 @@ export default function ReplyItem({ reply, postId }: ReplyItemProps) {
                 {data &&
                     <div className="flex items-center gap-2">
                         {data.role !== 'user' && reply.status && <button onClick={() => handleChangeCommentStatus(reply._id)} className="bg-accent-50 text-accent-600 p-1 rounded-full font-bold cursor-pointer"><small>{commentStatus[reply.status]}</small></button>}
-                        <OptionsComment commentId={reply._id} authorId={reply.author?._id} postId={postId} editFunction={() => setShowEdit(!showEdit)} reports={reply.reports} />
+                        <OptionsComment commentId={reply._id} authorId={reply.author!._id} postId={postId} editFunction={() => setShowEdit(!showEdit)} reports={reply.reports} />
                     </div>
                 }
             </div>
-            <div className="px-12 py-2 my-4">
+            <div className="lg:px-12 p-4 lg:py-4 my-4">
                 {showEdit ? (
                     <form
                         onSubmit={handleSubmit(handleUpdateComment)}
@@ -98,7 +98,7 @@ export default function ReplyItem({ reply, postId }: ReplyItemProps) {
                         </div>
                     </form>
                 ) : (
-                    <p className="text-balance">{reply.content}</p>
+                    <p className="text-balance prose">{reply.content}</p>
                 )}
             </div>
         </>

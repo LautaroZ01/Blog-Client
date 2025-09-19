@@ -7,6 +7,7 @@ import { ContactForm, WriterProfile } from "@/types/userType";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { AiFillMessage } from "react-icons/ai";
+import { FaUser } from "react-icons/fa";
 import { LuMail } from "react-icons/lu";
 import { MdOutlineSubject } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -48,7 +49,7 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
     if (isLoading) return 'Cargando...'
     return (
         <>
-            <section className="container-blog py-10 flex flex-col items-center justify-center min-h-screen gap-6 relative" id="contact">
+            <section className="container-blog py-10 flex flex-col items-center justify-center gap-6 relative" id="contact">
                 <div className="absolute -z-10 size-full bg-white bg-radial-[ellipse_at_bottom] from-primary-100/60 to-white to-40%"></div>
                 <AiFillMessage className="size-20 text-primary-500" />
                 <h2 className="text-4xl font-bold text-gray-700 text-center">Ponte en contacto conmigo</h2>
@@ -62,7 +63,7 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
                         Puedes chatear si inicies sesion
                     </Link>
                 )}
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col lg:flex-row items-center gap-4">
                     {writerInfo.contacts.map((contact) => (
                         <div key={contact._id} className="flex items-center gap-2 group cursor-pointer">
                             <div className="rounded-full p-2 shadow-md group-hover:bg-gray-100 transition-colors duration-pro">
@@ -77,7 +78,7 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
                 <div className="flex items-center gap-4">
                     {writerInfo.socialNetworks.map((socialNetwork) => (
                         <a href={socialNetwork.url} target="_blank" key={socialNetwork._id} className="flex items-center gap-2">
-                            <small className="rounded-full p-2 shadow hover:bg-gray-100 transition-colors duration-pro">
+                            <small className="link-social">
                                 <SocialIcon name={socialNetwork.type} size="small" />
                             </small>
                         </a>
@@ -86,9 +87,9 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
 
                 <form
                     onSubmit={handleSubmit(sendMessage)}
-                    className="flex flex-col gap-4 min-w-[600px] p-8 rounded-lg shadow-xl backdrop-blur-md mt-4"
+                    className="flex flex-col gap-4 lg:min-w-[600px] lg:p-8 p-4 rounded-lg shadow-xl backdrop-blur-md mt-4"
                 >
-                    <div className="flex gap-4">
+                    <div className="flex flex-col lg:flex-row gap-4">
                         <InputContainer>
                             <div className="form-data">
                                 <LuMail className="text-gray-500 size-5" />
@@ -114,6 +115,7 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
                         </InputContainer>
                         <InputContainer>
                             <div className="form-data">
+                                <FaUser className="text-gray-500 lg:hidden" />
                                 <input
                                     id="name"
                                     type="text"

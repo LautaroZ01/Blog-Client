@@ -7,6 +7,7 @@ import { formatDate } from "@/utils/formatUtil";
 import { FaComment } from "react-icons/fa";
 import CommentView from "./comments/CommentView";
 import LikePost from "@/components/post/LikePost";
+import { useNavigate } from "react-router-dom";
 
 type PostViewProps = {
     post: Post & {
@@ -15,6 +16,7 @@ type PostViewProps = {
 }
 
 export default function PostView({ post }: PostViewProps) {
+    const navigate = useNavigate()
     useEffect(() => {
         document.title = post.title;
         return () => {
@@ -26,7 +28,7 @@ export default function PostView({ post }: PostViewProps) {
             <article className="max-w-6xl mx-auto px-4 py-8">
                 <header className="mb-8 text-center max-w-[100ch] mx-auto flex items-center justify-center gap-2">
                     <ArrowBack />
-                    <h1 className="text-4xl font-semibold text-gray-700 text-balance">{post.title}</h1>
+                    <h1 className="lg:text-4xl text-2xl font-semibold text-gray-700 text-balance">{post.title}</h1>
                 </header>
 
                 {post.images && post.images.length > 0 && (
@@ -34,17 +36,17 @@ export default function PostView({ post }: PostViewProps) {
                 )}
 
                 <section className="flex items-start justify-between gap-2 w-full max-w-[100ch] mx-auto">
-                    <div className="flex flex-col items-start gap-4">
+                    <button onClick={() => navigate(`${location.pathname}?writerId=${post.author?._id}`)} className="flex flex-col items-start gap-4 group cursor-pointer">
                         <div className="flex items-center gap-2 text-sm">
                             <div>
                                 <AuthPhoto photo={post.author?.photo || ''} name={post.author?.name || ''} size="small" />
                             </div>
                             <div>
-                                <p className="font-bold text-gray-700">{post.author?.name || ''}</p>
+                                <p className="font-bold text-gray-700 text-left group-hover:text-primary-400 transition-colors duration-pro">{post.author?.name || ''}</p>
                                 <p className="text-gray-500">{post.author?.email || ''}</p>
                             </div>
                         </div>
-                    </div>
+                    </button>
                     <div className="flex flex-col items-end gap-2">
                         <div className="flex items-center gap-6 text-sm text-gray-500 font-bold">
                             <LikePost postId={post._id} likes={post.likes} />
@@ -75,7 +77,7 @@ export default function PostView({ post }: PostViewProps) {
 
             </article>
             <div className="bg-bg-100 py-4 relative">
-                <section className="w-full max-w-[100ch] mx-auto">
+                <section className="w-full max-w-[100ch] mx-auto px-2">
                     <CommentView postId={post._id} />
                 </section>
             </div>

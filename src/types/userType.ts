@@ -116,7 +116,9 @@ export const writerInfoSchema = userSchema.pick({
     email: true,
     name: true,
     lastname: true,
-    photo: true
+    photo: true,
+    birthdate: true,
+    country: true
 }).merge(
     writerSchema.pick({
         socialNetworks: true,

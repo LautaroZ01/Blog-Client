@@ -10,7 +10,7 @@ export default function HomePostListView() {
   })
 
   return (
-    <div className="grid grid-cols-2 grid-rows-4 gap-4 my-4 h-[calc(100vh-8rem)] container-blog">
+    <div className="grid lg:grid-cols-2 grid-rows-4 gap-4 my-4 h-[calc(100vh-8rem)] container-blog">
       {data?.map((post, index) => (
         <HomePostItem key={post._id} post={post} index={index} />
       ))}

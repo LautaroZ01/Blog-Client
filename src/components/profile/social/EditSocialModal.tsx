@@ -57,7 +57,7 @@ export default function EditSocialModal({ social }: EditSocialModalProps) {
         <Modal title="Edita tu red social">
             <form
                 onSubmit={handleSubmit(handleEdit)}
-                className='px-2 min-w-md mt-4 space-y-4'
+                className='px-2 lg:min-w-md mt-4 space-y-4'
             >
                 <SocialFrom register={register} errors={errors} />
 
