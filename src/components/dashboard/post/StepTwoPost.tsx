@@ -32,7 +32,6 @@ export default function StepTwoPost({
         }
     }, [images, setImages, existingImages.length]);
 
-    // Eventos para drag and drop
     const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();

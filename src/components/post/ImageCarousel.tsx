@@ -1,6 +1,7 @@
 import { Category, Post } from "@/types/postType";
 import { useState, useEffect, useCallback } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import ImgContainer from "./ImgContainer";
 
 interface ImageCarouselProps {
     images: Post['images'];
@@ -17,7 +18,6 @@ export default function ImageCarousel({ images, category }: ImageCarouselProps) 
         );
     }, [images.length]);
 
-    // Auto-advance slides every 5 seconds
     useEffect(() => {
         if (images.length <= 1) return;
 
@@ -44,11 +44,10 @@ export default function ImageCarousel({ images, category }: ImageCarouselProps) 
 
     return (
         <div
-            className="relative w-full h-96 md:h-[720px] overflow-hidden rounded-lg my-8"
+            className="relative w-full h-96 md:h-[720px] overflow-hidden my-8"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            {/* Navigation Arrows */}
             {images.length > 1 && (
                 <>
                     <button
@@ -74,23 +73,12 @@ export default function ImageCarousel({ images, category }: ImageCarouselProps) 
                 </>
             )}
 
-            {/* Slides Container */}
             <div
                 className="flex h-full transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
                 {images.map((image, index) => (
-                    <div
-                        key={index}
-                        className="w-full h-full flex-shrink-0"
-                    >
-                        <img
-                            src={image}
-                            alt={`Slide ${index + 1}`}
-                            className="w-full h-full lg:object-cover object-contain aspect-video"
-                            draggable="false"
-                        />
-                    </div>
+                    <ImgContainer key={index} img={image} alt={`Slide ${index + 1}`} />
                 ))}
             </div>
 

@@ -56,6 +56,12 @@ export type TagDashboardList = Pick<Tag, '_id' | 'name' | 'slug' | 'posts'>
 export type TagFormType = Pick<Tag, 'name'>
 export type TagEditPostType = Pick<Tag, '_id' | 'name'>;
 
+export const postSectionSchema = z.object({
+    _id: z.string(),
+    title: z.string(),
+    content: z.string(),
+    thumbnail: z.string().optional().default('')
+})
 
 export const postSchema = z.object({
     _id: z.string(),
@@ -64,6 +70,7 @@ export const postSchema = z.object({
     content: z.string().optional(),
     images: z.array(z.string()).optional().default([]),
     status: postStatusSchema,
+    sections: z.array(postSectionSchema).optional().default([]),
     category: categorySchema.pick({
         _id: true,
         name: true,

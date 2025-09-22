@@ -8,6 +8,7 @@ import { FaComment } from "react-icons/fa";
 import CommentView from "./comments/CommentView";
 import LikePost from "@/components/post/LikePost";
 import { useNavigate } from "react-router-dom";
+import ImgContainer from "@/components/post/ImgContainer";
 
 type PostViewProps = {
     post: Post & {
@@ -19,16 +20,17 @@ export default function PostView({ post }: PostViewProps) {
     const navigate = useNavigate()
     useEffect(() => {
         document.title = post.title;
+        window.scrollTo(0, 0);
         return () => {
             document.title = 'Blog';
         };
     }, [post.title]);
     return (
         <>
-            <article className="max-w-6xl mx-auto px-4 py-8">
-                <header className="mb-8 text-center max-w-[100ch] mx-auto flex items-center justify-center gap-2">
+            <main className="max-w-6xl mx-auto px-4 py-8">
+                <header className="mb-8 text-center max-w-[100ch] mx-auto flex items-center gap-2">
                     <ArrowBack />
-                    <h1 className="lg:text-4xl text-2xl font-semibold text-gray-700 text-balance">{post.title}</h1>
+                    <h1 className="lg:text-4xl text-2xl font-semibold text-gray-700 text-balance grow">{post.title}</h1>
                 </header>
 
                 {post.images && post.images.length > 0 && (
@@ -63,9 +65,24 @@ export default function PostView({ post }: PostViewProps) {
 
                 {post.content && (
                     <div
-                        className="max-w-[80ch] mt-8 mx-auto prose border-t border-gray-300 pt-4"
+                        className="max-w-[80ch] mt-8 mx-auto border-t border-gray-300 pt-4 prose prose-lg"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     />
+                )}
+
+                {post.sections && post.sections.length > 0 && (
+                    post.sections.map(section => (
+                        <section key={section._id} className="my-8">
+                            {section.thumbnail && (
+                                <ImgContainer img={section.thumbnail} alt={section.title} />
+                            )}
+                            <h2 className="lg:text-4xl text-2xl font-semibold text-gray-700 text-balance text-center mt-4">{section.title}</h2>
+                            <div
+                                className="max-w-[80ch] mt-8 mx-auto pt-4 prose prose-lg"
+                                dangerouslySetInnerHTML={{ __html: section.content }}
+                            />
+                        </section>
+                    ))
                 )}
 
                 <section className="flex items-center gap-2 mt-8 justify-center max-w-[100ch] mx-auto">
@@ -73,9 +90,7 @@ export default function PostView({ post }: PostViewProps) {
                         <span key={tag._id} className="py-2 px-4 rounded-full bg-primary-50 text-primary-600 text-sm font-bold">#{tag.slug}</span>
                     ))}
                 </section>
-
-
-            </article>
+            </main>
             <div className="bg-bg-100 py-4 relative">
                 <section className="w-full max-w-[100ch] mx-auto px-2">
                     <CommentView postId={post._id} />

@@ -16,17 +16,13 @@ export default function HomePostItem({ post, index }: HomePostItemProps) {
     return (
         <div
             key={post._id}
-            className={`relative overflow-hidden aspect-video rounded-lg h-full w-full flex flex-col justify-between ${index === 0 ? 'row-span-4' : index === 1 ? 'row-span-2' : 'row-span-2 col-start-2 row-start-3'}`}
+            className={`relative overflow-hidden aspect-video rounded-lg min-h-96 lg:h-full w-full flex flex-col justify-between ${index === 0 ? 'lg:row-span-4' : index === 1 ? 'lg:row-span-2' : 'lg:row-span-2 lg:col-start-2 lg:row-start-3'}`}
         >
             <div className="absolute inset-0 z-0 w-full h-full">
                 <img
-                    src={post.images[0]}
+                    src={post.images[0] ? post.images[0] : '/default-img.webp'}
                     alt={post.title}
                     className="w-full h-full object-cover"
-                    onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://via.placeholder.com/800x600?text=Imagen+no+disponible';
-                    }}
                 />
                 <div className="absolute inset-0 bg-radial-[at_50%_50%] from-transparent to-black/50 to-70% z-10" />
             </div>

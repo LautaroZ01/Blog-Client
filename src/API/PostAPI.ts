@@ -6,7 +6,10 @@ import { isAxiosError } from "axios";
 export async function getPostsHome() {
     try {
         const { data } = await api.get('/post?limit=3');
+        console.log(data)
         const response = postsSchema.safeParse(data.data);
+
+        console.log(response)
 
         if (response.success) {
             return response.data;
