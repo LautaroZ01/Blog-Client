@@ -9,6 +9,7 @@ import TagList from "./TagList"
 import { useNavigate } from "react-router-dom"
 import { MdModeEdit } from "react-icons/md"
 import { postStatus } from "@/locales/es"
+import { FiTag } from "react-icons/fi"
 
 type StepThreePostProps = {
     register: UseFormRegister<PostFormType>
@@ -25,7 +26,6 @@ export default function StepThreePost({
     setValue,
     watch,
     defaultTags = [],
-    defaultCategory = ""
 }: StepThreePostProps) {
     const [selectedTags, setSelectedTags] = useState<Tags>(defaultTags)
     const navigate = useNavigate()
@@ -68,9 +68,8 @@ export default function StepThreePost({
                                 id="category"
                                 className="input-data capitalize mr-4 cursor-pointer"
                                 {...register("category", {
-                                    required: "El tipo es obligatorio",
+                                    required: "El tipo es obligatorio"
                                 })}
-                                defaultValue={defaultCategory}
                             >
                                 <option value="">Selecciona la categoria</option>
                                 {categories.map((category) => (
@@ -85,8 +84,8 @@ export default function StepThreePost({
                             </select>
                         )}
                     </div>
-                    {errors.title && (
-                        <ErrorMessage>{errors.title.message}</ErrorMessage>
+                    {errors.category && (
+                        <ErrorMessage>{errors.category.message}</ErrorMessage>
                     )}
                 </InputContainer>
 
@@ -95,10 +94,10 @@ export default function StepThreePost({
                         <label htmlFor="tags" className="text-sm font-semibold text-gray-800">Etiquetas</label>
                     </div>
                     <div className="form-data">
-                        <div className="flex w-full px-2 items-start justify-between">
+                        <div className="flex w-full px-2 items-start justify-between min-h-60">
                             {selectedTags.length > 0 ? (
                                 <>
-                                    <div className="grid grid-cols-4 gap-2 min-w-xl p-4">
+                                    <div className="grid grid-cols-4 gap-2 min-w-xl p-6  items-start">
                                         {selectedTags.map(tag => (
                                             <span key={tag._id} className="bg-blue-100 text-primary-800 px-2 w-full text-center rounded-md">
                                                 #{tag.name}
@@ -108,7 +107,7 @@ export default function StepThreePost({
                                     <button
                                         onClick={() => navigate(`${location.pathname}?addTags=true`)}
                                         type="button"
-                                        className="btn-rounded"
+                                        className="btn-rounded mt-4"
                                     >
                                         <MdModeEdit />
                                     </button>
@@ -117,9 +116,12 @@ export default function StepThreePost({
                                 <button
                                     onClick={() => navigate(`${location.pathname}?addTags=true`)}
                                     type="button"
-                                    className="input-data cursor-pointer hover:text-gray-800 text-left capitalize"
+                                    className="input-data cursor-pointer hover:text-gray-800 text-left capitalize min-h-60 flex flex-col items-center justify-center gap-2 text-gray-500"
                                 >
-                                    Selecciona las etiquetas
+                                    <FiTag />
+                                    <span>
+                                        Selecciona las etiquetas
+                                    </span>
                                 </button>
                             )}
                         </div>

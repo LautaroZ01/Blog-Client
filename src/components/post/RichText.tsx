@@ -4,6 +4,7 @@ import Link from "@tiptap/extension-link"
 import Toolbar from "./Toolbar"
 import { Control, Controller } from "react-hook-form"
 import ErrorMessage from "../ui/ErrorMessage"
+import { PostFormType } from "@/types/postType"
 
 interface FormData {
     [key: string]: string;
@@ -11,7 +12,7 @@ interface FormData {
 
 type RichTextProps = {
     name: string
-    control: Control<FormData>
+    control: Control<FormData & PostFormType>
 }
 
 export default function RichText({ name, control }: RichTextProps) {

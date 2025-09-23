@@ -9,6 +9,8 @@ import { FiChevronLeft, FiChevronRight, FiTag, FiFileText, FiImage } from "react
 import StepThreePost from "@/components/dashboard/post/StepThreePost";
 import StepTwoPost from "@/components/dashboard/post/StepTwoPost";
 import { useNavigate } from "react-router-dom";
+import StepFourPost from "@/components/dashboard/post/StepFourPost";
+import { MdBookmarkAdd } from "react-icons/md";
 
 export default function CreatePostView() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -53,6 +55,12 @@ export default function CreatePostView() {
       title: "Detalles",
       icon: <FiTag size={16} />,
       component: <StepThreePost register={register} errors={errors} setValue={setValue} watch={watch} />
+    },
+    {
+      step: 4,
+      title: "Secciones",
+      icon: <MdBookmarkAdd size={16} />,
+      component: <StepFourPost control={control} register={register} errors={errors} />
     }
   ];
 
@@ -61,8 +69,8 @@ export default function CreatePostView() {
   // Mutación para crear el post
   const { mutate: createPostMutation, isPending: isCreatingPost } = useMutation({
     mutationFn: createPost,
-    onError: (error) => {
-      toast.error(error.message);
+    onError: () => {
+      toast.error('Revisa que los campos obligatorios esten completados (Titulo, Contenido, Categoria)');
     },
     onSuccess: (data) => {
       if (postImages.length > 0) {
@@ -98,7 +106,7 @@ export default function CreatePostView() {
 
   const nextStep = async () => {
     if (currentStep === 1) {
-      const isValid = await trigger(["title", "content"]);
+      const isValid = await trigger(["title", "content", "category"]);
       if (!isValid) return;
     }
 
