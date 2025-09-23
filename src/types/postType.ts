@@ -57,10 +57,10 @@ export type TagFormType = Pick<Tag, 'name'>
 export type TagEditPostType = Pick<Tag, '_id' | 'name'>;
 
 export const postSectionSchema = z.object({
-    _id: z.string(),
+    _id: z.string().optional(),
     title: z.string(),
     content: z.string(),
-    thumbnail: z.string().optional().default('')
+    thumbnail: z.union([z.string(), z.instanceof(File)]).optional()
 })
 
 export const postSchema = z.object({
@@ -114,6 +114,7 @@ export const postFormSchema = postSchema.pick({
     title: true,
     content: true,
     status: true,
+    sections: true
 }).extend({
     category: z.string(),
     tags: z.array(z.string()).optional().default([]),
@@ -125,6 +126,7 @@ export const postEditSchema = postSchema.pick({
     content: true,
     images: true,
     status: true,
+    sections: true,
     tags: true,
     category: true,
     author: true

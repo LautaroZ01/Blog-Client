@@ -11,11 +11,11 @@ import StepTwoPost from "@/components/dashboard/post/StepTwoPost";
 import { useNavigate } from "react-router-dom";
 import StepFourPost from "@/components/dashboard/post/StepFourPost";
 import { MdBookmarkAdd } from "react-icons/md";
+import { uploadImageToCloudinary } from "@/utils/cloudinary";
 
 export default function CreatePostView() {
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate()
-  // Estado para almacenar las imágenes
   const [postImages, setPostImages] = useState<Array<{ file: File; preview: string }>>([]);
 
   const defaultValues: PostFormType = {
@@ -24,6 +24,7 @@ export default function CreatePostView() {
     category: "",
     tags: [],
     status: "draft",
+    sections: []
   };
 
   const {
@@ -100,10 +101,32 @@ export default function CreatePostView() {
     }
   });
 
-  const onSubmit = (formData: PostFormType) => {
-    createPostMutation(formData);
+  const onSubmit = async (formData: PostFormType) => {
+    try {
+      // 1. Subir imágenes de las secciones
+      const sectionsWithUrls = await Promise.all(
+        formData.sections.map(async (section) => {
+          if (section.thumbnail && section.thumbnail instanceof File) {
+            const url = await uploadImageToCloudinary(section.thumbnail);
+            return { ...section, thumbnail: url };
+          }
+          return section;
+        })
+      );
+  
+      const finalData = {
+        ...formData,
+        sections: sectionsWithUrls,
+      };
+  
+      // 2. Crear el post en el backend
+      createPostMutation(finalData);
+  
+    } catch (error) {
+      console.error("Error al subir imágenes de secciones:", error);
+      toast.error("Error al procesar imágenes de secciones");
+    }
   };
-
   const nextStep = async () => {
     if (currentStep === 1) {
       const isValid = await trigger(["title", "content", "category"]);

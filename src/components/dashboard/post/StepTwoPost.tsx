@@ -165,7 +165,6 @@ export default function StepTwoPost({
                                 )
                             </h3>
                             <div className="grid grid-cols-4 gap-2">
-                                {/* Mostrar imágenes existentes secundarias */}
                                 {existingImages.slice(1).map((image, index) => (
                                     <div key={`existing-${index}`} className="relative">
                                         <img
