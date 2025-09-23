@@ -9,7 +9,7 @@ import InputComment from "./InputComment"
 
 type ReplyFormProps = {
     commentId: Comment['_id']
-    postId: Post['_id']
+    postId?: Post['_id']
     setShowReplies: (show: boolean) => void
     data: Sesion
 }
@@ -26,8 +26,10 @@ export default function ReplyForm({ commentId, postId, setShowReplies, data }: R
     const { mutate } = useMutation({
         mutationFn: createReply,
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['comments', postId] })
-            queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            if (postId) {
+                queryClient.invalidateQueries({ queryKey: ['comments', postId] })
+                queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            }
             toast.success(data)
             reset()
             setShowReplies(false)

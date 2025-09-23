@@ -13,12 +13,13 @@ import { useNavigate } from "react-router-dom";
 type OptionsCommentProps = {
     commentId: Comment['_id']
     authorId: User['_id']
-    postId: Post['_id']
+    postId?: Post['_id']
     editFunction: () => void
     reports?: number
+    isUser?: boolean
 }
 
-export default function OptionsComment({ commentId, authorId, postId, editFunction, reports }: OptionsCommentProps) {
+export default function OptionsComment({ commentId, authorId, postId, editFunction, reports, isUser }: OptionsCommentProps) {
     const { data } = useAuth()
     const [showOptions, setShowOptions] = useState(false)
     const navigate = useNavigate()
@@ -30,8 +31,13 @@ export default function OptionsComment({ commentId, authorId, postId, editFuncti
         onSuccess: (data) => {
             toast.success(data)
             setShowOptions(false)
-            queryClient.invalidateQueries({ queryKey: ['comments', postId] })
-            queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            if (postId) {
+                queryClient.invalidateQueries({ queryKey: ['comments', postId] })
+                queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            }
+            if (isUser) {
+                queryClient.invalidateQueries({ queryKey: ['userDetail', authorId] })
+            }
         },
         onError: (error) => {
             toast.error(error.message)

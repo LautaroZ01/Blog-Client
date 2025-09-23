@@ -11,6 +11,7 @@ import { formatAge } from "@/utils/formatUtil"
 import { roleUsers, userProvider, userStatus } from "@/locales/es"
 import { roleColor, statusColor } from "@/utils/dashboardUtil"
 import SocialIcon from "@/components/icons/SocialIcon"
+import { Author } from "@/types/userType"
 
 type UserDetailModalProps = {
     user: UserDashboard
@@ -36,6 +37,14 @@ export default function UserDetailModal({ user }: UserDetailModalProps) {
             toast.error(error.message)
         }
     })
+
+    const author: Author = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        photo: user.photo,
+        role: user.role
+    }
 
     return (
         <Modal title="Detalle de usuario">
@@ -150,7 +159,7 @@ export default function UserDetailModal({ user }: UserDetailModalProps) {
                     {changeInfo.comments && (
                         <div className="insert-animation overflow-y-auto max-h-[300px]">
                             {user.comments.length > 0 ? (
-                                <ComentList comments={user.comments} postId={user._id} />
+                                <ComentList comments={user.comments} author={author} isUser={true} />
                             ) : (
                                 <p className="text-center">No hay comentarios</p>
                             )}

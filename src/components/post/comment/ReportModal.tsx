@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
 type ReportModalProps = {
-    postId: Post['_id']
+    postId?: Post['_id']
 }
 
 const repotOptions = [
@@ -33,8 +33,10 @@ export default function ReportModal({ postId }: ReportModalProps) {
         mutationFn: reportComment,
         onSuccess: (data) => {
             toast.success(data)
-            queryClient.invalidateQueries({ queryKey: ['comments', postId] })
-            queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            if (postId) {
+                queryClient.invalidateQueries({ queryKey: ['comments', postId] })
+                queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            }
             navigate(-1)
         },
         onError: (error) => {

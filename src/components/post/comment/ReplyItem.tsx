@@ -10,13 +10,16 @@ import { formatDate } from '@/utils/formatUtil'
 import InputComment from './InputComment'
 import { commentStatus } from '@/locales/es'
 import { useAuth } from '@/hooks/useAuth'
+import { Author } from '@/types/userType'
 
 type ReplyItemProps = {
     reply: Reply
-    postId: Post['_id']
+    postId?: Post['_id']
+    isUser?: boolean
+    authorId?: Author['_id']
 }
 
-export default function ReplyItem({ reply, postId }: ReplyItemProps) {
+export default function ReplyItem({ reply, postId, isUser, authorId }: ReplyItemProps) {
     const { data } = useAuth()
     const [showEdit, setShowEdit] = useState(false)
     const defaultValues: CommentFormType = {
@@ -33,8 +36,13 @@ export default function ReplyItem({ reply, postId }: ReplyItemProps) {
         onSuccess: (data) => {
             toast.success(data)
             setShowEdit(false)
-            queryClient.invalidateQueries({ queryKey: ['comments', postId] })
-            queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            if (postId) {
+                queryClient.invalidateQueries({ queryKey: ['comments', postId] })
+                queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            }
+            if (isUser && authorId) {
+                queryClient.invalidateQueries({ queryKey: ['userDetail', authorId] })
+            }
         },
         onError: (error) => {
             toast.error(error.message)
@@ -54,8 +62,14 @@ export default function ReplyItem({ reply, postId }: ReplyItemProps) {
         mutationFn: changeCommentStatus,
         onSuccess: (data) => {
             toast.success(data)
-            queryClient.invalidateQueries({ queryKey: ['comments', postId] })
-            queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            if (postId) {
+                queryClient.invalidateQueries({ queryKey: ['comments', postId] })
+                queryClient.invalidateQueries({ queryKey: ['commentsPost', postId] })
+            }
+
+            if (isUser && authorId) {
+                queryClient.invalidateQueries({ queryKey: ['userDetail', authorId] })
+            }
         },
         onError: (error) => {
             toast.error(error.message)
@@ -80,7 +94,7 @@ export default function ReplyItem({ reply, postId }: ReplyItemProps) {
                 {data &&
                     <div className="flex items-center gap-2">
                         {data.role !== 'user' && reply.status && <button onClick={() => handleChangeCommentStatus(reply._id)} className="bg-accent-50 text-accent-600 p-1 rounded-full font-bold cursor-pointer"><small>{commentStatus[reply.status]}</small></button>}
-                        <OptionsComment commentId={reply._id} authorId={reply.author!._id} postId={postId} editFunction={() => setShowEdit(!showEdit)} reports={reply.reports} />
+                        <OptionsComment commentId={reply._id} authorId={reply.author!._id} postId={postId} editFunction={() => setShowEdit(!showEdit)} reports={reply.reports} isUser={isUser} />
                     </div>
                 }
             </div>
