@@ -20,10 +20,15 @@ export default function StepFourPost({ control, register, errors }: StepFourPost
     return (
         <section className="flex flex-col gap-6">
             {fields.map((field, index) => (
-                <details key={field.id} open>
+                <details key={field.id}>
                     <summary className="font-semibold text-lg">Sección {index + 1}</summary>
 
-                    {/* Título */}
+                    <input
+                        type="hidden"
+                        {...register(`sections.${index}._id`)}
+                        defaultValue={field._id || ""}
+                    />
+
                     <InputContainer>
                         <label
                             htmlFor={`sections.${index}.title`}
@@ -31,25 +36,34 @@ export default function StepFourPost({ control, register, errors }: StepFourPost
                         >
                             Título
                         </label>
-                        <input
-                            type="text"
-                            id={`sections.${index}.title`}
-                            className="input-data"
-                            placeholder="Escribe el título aquí..."
-                            {...register(`sections.${index}.title`, {
-                                required: "El título es obligatorio",
-                            })}
-                        />
+                        <div className="form-data">
+                            <input
+                                type="text"
+                                id={`sections.${index}.title`}
+                                className="input-data"
+                                placeholder="Escribe el título aquí..."
+                                defaultValue={field.title}
+                                {...register(`sections.${index}.title`, {
+                                    required: "El título es obligatorio",
+                                })}
+                            />
+                        </div>
                         {errors.sections?.[index]?.title && (
                             <ErrorMessage>{errors.sections[index]?.title?.message}</ErrorMessage>
                         )}
                     </InputContainer>
 
-                    {/* Editor */}
-                    <RichText name={`sections.${index}.content`} control={control} />
+                    {/* Editor de contenido */}
+                    <RichText
+                        name={`sections.${index}.content`}
+                        control={control}
+                    />
 
-                    {/* Imagen única */}
-                    <SectionImageUpload control={control} name={`sections.${index}.thumbnail`} />
+                    {/* Imagen (puede ser URL o File) */}
+                    <SectionImageUpload
+                        control={control}
+                        name={`sections.${index}.thumbnail`}
+                    />
 
                     <button
                         type="button"

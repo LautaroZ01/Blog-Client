@@ -9,6 +9,9 @@ import { FiChevronLeft, FiChevronRight, FiTag, FiFileText, FiImage } from "react
 import StepThreePost from "@/components/dashboard/post/StepThreePost";
 import StepTwoPost from "@/components/dashboard/post/StepTwoPost";
 import { Link, useNavigate } from "react-router-dom";
+import StepFourPost from "./StepFourPost";
+import { processSections } from "@/utils/processSections";
+import { MdBookmarkAdd } from "react-icons/md";
 
 type EditPostFormProps = {
     post: PostEdit;
@@ -36,6 +39,12 @@ export default function EditPostForm({ post }: EditPostFormProps) {
         category: post.category._id,
         tags: post.tags.map(tag => tag._id),
         status: post.status,
+        sections: post.sections.map(section => ({
+            title: section.title,
+            content: section.content,
+            thumbnail: section.thumbnail,
+            _id: section._id
+        }))
     };
 
     const {
@@ -83,6 +92,16 @@ export default function EditPostForm({ post }: EditPostFormProps) {
                 defaultTags={post.tags}
                 defaultCategory={post.category._id}
             />
+        },
+        {
+            step: 4,
+            title: "Secciones",
+            icon: <MdBookmarkAdd size={16} />,
+            component: <StepFourPost
+                control={control}
+                register={register}
+                errors={errors}
+            />
         }
     ];
 
@@ -127,11 +146,19 @@ export default function EditPostForm({ post }: EditPostFormProps) {
         }
     });
 
-    const onSubmit = (formData: PostFormType) => {
-        updatePostMutation({
-            postId: post._id,
-            ...formData
-        });
+    const onSubmit = async (formData: PostFormType) => {
+        try {
+            const sectionsWithUrls = await processSections(formData.sections);
+
+            updatePostMutation({
+                postId: post._id,
+                ...formData,
+                sections: sectionsWithUrls,
+            });
+        } catch (error) {
+            console.error("Error al subir imágenes de secciones:", error);
+            toast.error("Error al procesar imágenes de secciones");
+        }
     };
 
     const nextStep = async () => {
@@ -169,9 +196,12 @@ export default function EditPostForm({ post }: EditPostFormProps) {
                         <div
                             className={`h-full rounded-full transition-all duration-500 ${step.step <= currentStep ? 'w-full bg-green-500' : 'bg-gray-300'}`}
                         ></div>
-                        <div className={`flex flex-col items-center justify-center transition-all duration-600 absolute -top-4 right-0 rounded-full p-2 ${step.step <= currentStep ? 'bg-green-500 text-green-50' : 'bg-gray-200 text-gray-500'}`}>
+                        <button
+                            onClick={() => setCurrentStep(step.step)}
+                            className={`flex cursor-pointer flex-col items-center justify-center transition-all duration-600 absolute -top-4 right-0 rounded-full p-2 ${step.step <= currentStep ? 'bg-green-500 text-green-50' : 'bg-gray-200 text-gray-500'} hover:scale-110`}
+                        >
                             {step.icon}
-                        </div>
+                        </button>
                     </div>
                 ))}
             </div>

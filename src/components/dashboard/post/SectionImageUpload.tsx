@@ -50,8 +50,11 @@ export default function SectionImageUpload({ control, name }: SectionImageUpload
               <button
                 type="button"
                 onClick={() => {
-                  onChange(undefined);
+                  onChange("");
                   setPreview(null);
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                  }
                 }}
                 className="absolute cursor-pointer top-2 right-2 bg-red-100 text-red-800 rounded-full w-8 h-8 flex items-center justify-center"
               >

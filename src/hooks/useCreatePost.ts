@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { createPost, uploadPostImages } from "@/API/PostAPI";
-import { uploadImageToCloudinary } from "@/utils/cloudinary";
 import { PostFormType } from "@/types/postType";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { processSections } from "@/utils/processSections";
 
 type PostImage = { file: File; preview: string };
 
@@ -44,15 +44,7 @@ export function useCreatePost(reset: () => void, setCurrentStep: (n: number) => 
 
     const handleSubmitPost = async (formData: PostFormType) => {
         try {
-            const sectionsWithUrls = await Promise.all(
-                formData.sections.map(async (section) => {
-                    if (section.thumbnail && section.thumbnail instanceof File) {
-                        const url = await uploadImageToCloudinary(section.thumbnail);
-                        return { ...section, thumbnail: url };
-                    }
-                    return section;
-                })
-            );
+            const sectionsWithUrls = await processSections(formData.sections);
 
             createPostMutation.mutate({
                 ...formData,
