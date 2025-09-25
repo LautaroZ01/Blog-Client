@@ -4,6 +4,7 @@ import InputContainer from "@/components/auth/InputContainer"
 import RichText from "@/components/post/RichText"
 import ErrorMessage from "@/components/ui/ErrorMessage"
 import SectionImageUpload from "./SectionImageUpload"
+import { MdDelete } from "react-icons/md"
 
 type StepFourPostProps = {
     control: Control<PostFormType>
@@ -20,8 +21,19 @@ export default function StepFourPost({ control, register, errors }: StepFourPost
     return (
         <section className="flex flex-col gap-6">
             {fields.map((field, index) => (
-                <details key={field.id}>
-                    <summary className="font-semibold text-lg">Sección {index + 1}</summary>
+                <details key={field.id} className="p-2 shadow-lg rounded-lg space-y-2 mt-2">
+                    <summary className="font-semibold text-lg cursor-pointer text-gray-500 flex justify-between items-center">
+                        <p>
+                            Sección {index + 1}
+                        </p>
+                        <button
+                            type="button"
+                            className="btn-rounded-delete"
+                            onClick={() => remove(index)}
+                        >
+                            <MdDelete />
+                        </button>
+                    </summary>
 
                     <input
                         type="hidden"
@@ -29,10 +41,15 @@ export default function StepFourPost({ control, register, errors }: StepFourPost
                         defaultValue={field._id || ""}
                     />
 
+                    <SectionImageUpload
+                        control={control}
+                        name={`sections.${index}.thumbnail`}
+                    />
+
                     <InputContainer>
                         <label
                             htmlFor={`sections.${index}.title`}
-                            className="text-sm font-semibold text-gray-800"
+                            className="text-sm font-semibold text-gray-800 mt-4"
                         >
                             Título
                         </label>
@@ -53,31 +70,16 @@ export default function StepFourPost({ control, register, errors }: StepFourPost
                         )}
                     </InputContainer>
 
-                    {/* Editor de contenido */}
                     <RichText
                         name={`sections.${index}.content`}
                         control={control}
                     />
-
-                    {/* Imagen (puede ser URL o File) */}
-                    <SectionImageUpload
-                        control={control}
-                        name={`sections.${index}.thumbnail`}
-                    />
-
-                    <button
-                        type="button"
-                        className="text-red-500 mt-2"
-                        onClick={() => remove(index)}
-                    >
-                        Eliminar sección
-                    </button>
                 </details>
             ))}
 
             <button
                 type="button"
-                className="btn-primary"
+                className="btn-primary mt-4"
                 onClick={() => append({ title: "", content: "", thumbnail: "" })}
             >
                 Agregar sección

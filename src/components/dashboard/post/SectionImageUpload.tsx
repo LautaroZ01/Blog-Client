@@ -2,6 +2,7 @@ import { Controller, Control, FieldPath } from "react-hook-form";
 import { useRef, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { PostFormType } from "@/types/postType";
+import { SiCloudinary } from "react-icons/si";
 
 type SectionImageUploadProps = {
   control: Control<PostFormType>;
@@ -23,7 +24,7 @@ export default function SectionImageUpload({ control, name }: SectionImageUpload
           {!value ? (
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 transition"
+              className="border-2 border-dashed border-gray-500 text-gray-500 flex flex-col items-center justify-center rounded-lg min-h-60 p-6 text-center cursor-pointer hover:border-blue-400 hover:text-blue-400 transition mt-4"
             >
               <input
                 type="file"
@@ -38,14 +39,17 @@ export default function SectionImageUpload({ control, name }: SectionImageUpload
                 className="hidden"
                 accept="image/*"
               />
-              <p className="text-gray-500">Haz clic para seleccionar una imagen</p>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <SiCloudinary size={36} />
+                <p>Haz clic para seleccionar una imagen</p>
+              </div>
             </div>
           ) : (
             <div className="relative mt-4">
               <img
                 src={preview || (value instanceof File ? URL.createObjectURL(value) : value as string)}
                 alt="Preview sección"
-                className="w-full h-48 object-cover rounded-lg"
+                className="w-full min-h-60 object-cover rounded-lg mt-4"
               />
               <button
                 type="button"
