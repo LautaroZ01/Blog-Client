@@ -1,14 +1,15 @@
 import { Category, Post } from "@/types/postType";
 import { useState, useEffect, useCallback } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaRegClock } from "react-icons/fa";
 import ImgContainer from "./ImgContainer";
 
 interface ImageCarouselProps {
-    images: Post['images'];
-    category: Category['name'];
+    images: Post['images']
+    category: Category['name']
+    readTime: Post['readTime']
 }
 
-export default function ImageCarousel({ images, category }: ImageCarouselProps) {
+export default function ImageCarousel({ images, category, readTime }: ImageCarouselProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
 
@@ -100,8 +101,13 @@ export default function ImageCarousel({ images, category }: ImageCarouselProps) 
                 </div>
             )}
 
-            <div className="absolute bottom-0 right-0 z-10 p-4">
-                <span className="text-xs text-primary-50 border-primary-700 border rounded-full px-2 py-1 inline-flex items-center gap-1 bg-primary-800">
+            <div className="absolute bottom-0 right-0 z-10 p-4 flex items-center justify-center gap-2">
+                <span className="text-xs text-primary-50 border-primary-700 border rounded-full px-2 py-1 inline-flex items-center justify-center gap-1 bg-primary-800 ">
+                    <FaRegClock />
+                    <span>{readTime} minutos</span>
+                </span>
+
+                <span className="text-xs text-primary-50 border-primary-700 border rounded-full px-2 py-1 bg-primary-800">
                     {category}
                 </span>
             </div>

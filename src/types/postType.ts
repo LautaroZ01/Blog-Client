@@ -71,6 +71,7 @@ export const postSchema = z.object({
     images: z.array(z.string()).optional().default([]),
     status: postStatusSchema,
     sections: z.array(postSectionSchema).optional().default([]),
+    readTime: z.number().optional(),
     category: categorySchema.pick({
         _id: true,
         name: true,

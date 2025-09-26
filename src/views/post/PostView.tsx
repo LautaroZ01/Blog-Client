@@ -34,7 +34,7 @@ export default function PostView({ post }: PostViewProps) {
                 </header>
 
                 {post.images && post.images.length > 0 && (
-                    <ImageCarousel images={post.images} category={post.category.name} />
+                    <ImageCarousel images={post.images} category={post.category.name} readTime={post.readTime} />
                 )}
 
                 <section className="flex items-start justify-between gap-2 w-full max-w-[100ch] mx-auto">
