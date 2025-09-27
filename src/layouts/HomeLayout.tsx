@@ -6,10 +6,9 @@ export default function HomeLayout() {
     return (
         <>
             <Header />
-
-            <section className="">
+            <>
                 <Outlet />
-            </section>
+            </>
             <WriterModal />
         </>
     )

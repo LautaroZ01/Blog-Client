@@ -7,7 +7,7 @@ type HeroSectionViewProps = {
 
 export default function HeroSectionView({ writerInfo }: HeroSectionViewProps) {
     return (
-        <div className="h-[calc(100vh-8rem)] relative">
+        <main className="h-[calc(100vh-8rem)] relative" id="hero">
             <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-radial-[at_70%_50%] from-primary-100/60 to-white to-50%"></div>
             <section className="container-blog flex flex-col items-center justify-center gap-4 h-full">
                 <AuthPhoto photo={writerInfo.photo} name={writerInfo.name} size="big" />
@@ -18,10 +18,10 @@ export default function HeroSectionView({ writerInfo }: HeroSectionViewProps) {
                 <p className="text-gray-500 max-w-[80ch] text-center text-balance">Este es un espacio donde comparto mis pensamientos, ideas y experiencias con una mirada auténtica y personal. Aquí encontrarás desde reflexiones creativas hasta información práctica que puede inspirarte o ayudarte en tu día a día. Te invito a recorrer los artículos, dejar tus comentarios y formar parte de esta conversación. Porque las mejores ideas nacen cuando se comparten.</p>
 
                 <div className="flex gap-4 p-4">
-                    <a href="#" className="btn-secundary">Contactar</a>
-                    <a href="#" className="btn-primary">Ver articulos</a>
+                    <a href="#contact" className="btn-secundary">Contactar</a>
+                    <a href="#posts" className="btn-primary">Ver articulos</a>
                 </div>
             </section>
-        </div>
+        </main>
     )
 }
