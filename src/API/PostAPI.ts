@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { Post, postEditSchema, PostFilter, PostFormType, postSchema, postsDashboardSchema, postsSchema } from "@/types/postType";
+import { Post, postEditSchema, PostFilter, PostFormType, postSchema, postsDashboardSchema, postsListSchema, postsSchema } from "@/types/postType";
 import { uploadImageToCloudinary } from "@/utils/cloudinary";
 import { isAxiosError } from "axios";
 
@@ -7,6 +7,21 @@ export async function getPostsHome() {
     try {
         const { data } = await api.get('/post?limit=3');
         const response = postsSchema.safeParse(data.data);
+
+        if (response.success) {
+            return response.data;
+        }
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function getPosts() {
+    try {
+        const { data } = await api.get('/post');
+        const response = postsListSchema.safeParse(data);
 
         if (response.success) {
             return response.data;

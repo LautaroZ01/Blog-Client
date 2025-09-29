@@ -162,6 +162,11 @@ export type PostsView = z.infer<typeof postsViewSchema>
 
 export const postsSchema = z.array(postSchema)
 
+export const postsListSchema = z.object({
+    data: postsSchema,
+    pagination: paginationSchema
+})
+
 export const postsDashboardSchema = z.object({
     posts: postsSchema,
     categories: z.array(categorySchema.pick({

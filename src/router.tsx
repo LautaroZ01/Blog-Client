@@ -22,6 +22,7 @@ import { postOptions, userOptions } from './utils/dashboardUtil'
 import CreatePostView from './views/dashboard/post/CreatePostView'
 import EditPostView from './views/dashboard/post/EditPostView'
 import PostBySlogView from './views/post/PostBySlogView'
+import PostListView from './views/post/PostListView'
 
 export default function Router() {
     return (
@@ -29,6 +30,7 @@ export default function Router() {
             <Routes>
                 <Route element={<HomeLayout />}>
                     <Route path='/' element={<HomeView />} />
+                    <Route path='/post' element={<PostListView />} />
                     <Route path='/post/:slug' element={<PostBySlogView />} />
 
                     <Route path='/user' element={<ProfileLayout />}>

@@ -42,9 +42,9 @@ export default function HomePostItem({ post, index }: HomePostItemProps) {
                         </div>
                     </button>
                     <div className="flex items-center gap-2">
-                        <span className="text-xs text-primary-50 border-primary-700 border rounded-full px-2 py-1 inline-flex items-center gap-1 bg-primary-800">
+                        <small className="badget-category">
                             {post.category?.name || 'Sin categoría'}
-                        </span>
+                        </small>
                     </div>
                 </div>
             )}
@@ -57,9 +57,9 @@ export default function HomePostItem({ post, index }: HomePostItemProps) {
                                 <FaCalendar className="inline mr-1" />
                                 {formatDate(post.createdAt?.toString() || '')}
                             </div>
-                            <div className="text-xs text-primary-50 border-primary-700 border rounded-full px-2 py-1 inline-flex items-center gap-1 bg-primary-800">
+                            <small className="badget-category">
                                 {post.category?.name || 'Sin categoría'}
-                            </div>
+                            </small>
                         </div>
                         <Link to={`/post/${post.slug}`} className="text-2xl line-clamp-1 font-semibold hover:text-primary-400 transition-colors duration-pro text-wrap">{post.title}</Link>
                     </div>

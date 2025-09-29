@@ -13,7 +13,7 @@ export default function HeroSectionView({ writerInfo }: HeroSectionViewProps) {
                 <AuthPhoto photo={writerInfo.photo} name={writerInfo.name} size="big" />
                 <div className="text-center">
                     <small className="font-bold text-gray-500">Hola 👋, Soy <span className="text-accent-400 font-extrabold">{writerInfo.name} {writerInfo.lastname}</span></small>
-                    <h2 className="text-4xl font-bold text-gray-700">Bienvenido a mi <span className="text-primary-500 font-extrabold">Blog</span></h2>
+                    <h2 className="h1-style">Bienvenido a mi <span className="text-primary-500">Blog</span></h2>
                 </div>
                 <p className="text-gray-500 max-w-[80ch] text-center text-balance">Este es un espacio donde comparto mis pensamientos, ideas y experiencias con una mirada auténtica y personal. Aquí encontrarás desde reflexiones creativas hasta información práctica que puede inspirarte o ayudarte en tu día a día. Te invito a recorrer los artículos, dejar tus comentarios y formar parte de esta conversación. Porque las mejores ideas nacen cuando se comparten.</p>
 

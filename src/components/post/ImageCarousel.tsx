@@ -102,14 +102,14 @@ export default function ImageCarousel({ images, category, readTime }: ImageCarou
             )}
 
             <div className="absolute bottom-0 right-0 z-10 p-4 flex items-center justify-center gap-2">
-                <span className="text-xs text-primary-50 border-primary-700 border rounded-full px-2 py-1 inline-flex items-center justify-center gap-1 bg-primary-800 ">
+                <small className="inline-flex items-center justify-center gap-1 badget-category">
                     <FaRegClock />
                     <span>{readTime} minutos</span>
-                </span>
+                </small>
 
-                <span className="text-xs text-primary-50 border-primary-700 border rounded-full px-2 py-1 bg-primary-800">
+                <small className="badget-category">
                     {category}
-                </span>
+                </small>
             </div>
         </div>
     );

@@ -178,6 +178,10 @@ h3 {
     @apply p-1 rounded-lg font-bold;
 }
 
+.badget-category {
+    @apply text-xs text-primary-50 border-primary-700 border rounded-full px-2 py-1 inline-flex items-center gap-1 bg-primary-800;
+}
+
 .user-detail-box{
     @apply p-4 my-8 bg-bg-100/50 rounded-md shadow-md min-h-[400px];
 }
