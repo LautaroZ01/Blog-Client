@@ -48,7 +48,7 @@ export default function UserDetailModal({ user }: UserDetailModalProps) {
 
     return (
         <Modal title="Detalle de usuario">
-            <section className="min-w-2xl py-4 px-2 max-h-[800px]">
+            <section className="min-w-2xl py-4 px-2">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <AuthPhoto photo={user.photo} name={user.name} size="semi-big" />
@@ -62,11 +62,9 @@ export default function UserDetailModal({ user }: UserDetailModalProps) {
                             </small>
                         </div>
                     </div>
-                    {user.status === 'suspended' || user.status === 'inactive' ? (
-                        <button className="btn-secundary" onClick={() => mutate(user._id)}>Habilitar</button>
-                    ) : (
-                        <button className="btn-secundary" onClick={() => mutate(user._id)}>Suspender</button>
-                    )}
+                    <button className="btn-secundary" onClick={() => mutate(user._id)}>
+                        {user.status === 'suspended' || user.status === 'inactive' ? 'Habilitar' : 'Suspender'}
+                    </button>
                 </div>
 
                 <div className="user-detail-box">

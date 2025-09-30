@@ -75,9 +75,7 @@ export async function getAllUsers(query: UserFilter) {
 export async function getUserById(userId: User['_id']) {
     try {
         const { data } = await api.get(`/dashboard/user/${userId}`)
-        console.log(data)
         const response = userDashboardSchema.safeParse(data)
-        console.log(response)
 
         if (response.success) {
             return response.data
