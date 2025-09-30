@@ -153,6 +153,7 @@ export const postFilterSchema = z.object({
     search: z.string().optional(),
     category: z.string().optional(),
     tag: z.string().optional(),
+    writer: z.string().optional(),
     status: z.string().optional(),
     page: z.number().optional().default(1)
 })
@@ -163,19 +164,6 @@ export type PostsView = z.infer<typeof postsViewSchema>
 export const postsSchema = z.array(postSchema)
 
 export const postsListSchema = z.object({
-    data: postsSchema,
-    pagination: paginationSchema,
-    categories: z.array(categorySchema.pick({
-        _id: true,
-        name: true
-    })),
-    tags: z.array(tagSchema.pick({
-        _id: true,
-        name: true
-    })),
-})
-
-export const postsDashboardSchema = z.object({
     posts: postsSchema,
     categories: z.array(categorySchema.pick({
         _id: true,
@@ -184,6 +172,11 @@ export const postsDashboardSchema = z.object({
     tags: z.array(tagSchema.pick({
         _id: true,
         name: true
+    })),
+    writers: z.array(authorSchema.pick({
+        _id: true,
+        name: true,
+        email: true
     })),
     pagination: paginationSchema
 })
@@ -194,7 +187,7 @@ export type Posts = z.infer<typeof postsSchema>
 export type PostFormType = z.infer<typeof postFormSchema>;
 
 export type PostFilter = z.infer<typeof postFilterSchema>;
-export type PostListFilter = Pick<PostFilter, 'search' | 'category' | 'tag' | 'page'>
+export type PostListFilter = Pick<PostFilter, 'search' | 'category' | 'tag' | 'writer' | 'page'>
 export type AnyFilter = Pick<PostFilter, 'search' | 'page'>
 
 export const commentStructure = z.object({

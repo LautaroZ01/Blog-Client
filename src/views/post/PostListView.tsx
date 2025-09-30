@@ -11,13 +11,12 @@ import { MdBookmarkAdded } from "react-icons/md";
 export default function PostListView() {
     const [searchParams, setSearchParams] = useSearchParams()
 
-
-
     const defaultValues: PostListFilter = useMemo(
         () => ({
             search: searchParams.get("search") || "",
             category: searchParams.get("category") || "",
             tag: searchParams.get("tag") || "",
+            writer: searchParams.get("writer") || "",
             page: parseInt(searchParams.get("page") || "1", 10)
         }),
         [searchParams]
@@ -37,6 +36,7 @@ export default function PostListView() {
         if (data.search) params.search = data.search
         if (data.category) params.category = data.category
         if (data.tag) params.tag = data.tag
+        if (data.writer) params.writer = data.writer
 
         setSearchParams(params)
 
@@ -45,6 +45,7 @@ export default function PostListView() {
             search: data.search || '',
             category: data.category || '',
             tag: data.tag || '',
+            writer: data.writer || '',
             page: data.page || 1
         })
 
@@ -109,17 +110,32 @@ export default function PostListView() {
                                     ))}
                                 </select>
                             </div>
+                            <div className="w-full lg:w-60">
+                                <label htmlFor="writer"><small>Escritor</small></label>
+                                <select id="writer" {...register("writer")} className="select-filter">
+                                    <option value="">Todos</option>
+                                    {data.writers.map((writer) => (
+                                        <option key={writer.name} value={writer.email}>
+                                            {writer.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </>
                     )}
 
                 </FilterForm>
 
             </header>
-            <section className="max-w-7xl mx-auto my-8 px-16 lg:px-6 grid md:grid-cols-2 lg:grid-cols-3 items-stretch justify-between gap-4 mb-4">
-                {data.data.map(post => (
-                    <PostItem key={post._id} post={post} />
-                ))}
-            </section>
+            {data.posts.length > 0 ? (
+                <section className="max-w-7xl mx-auto my-8 px-16 lg:px-6 grid md:grid-cols-2 lg:grid-cols-3 items-stretch justify-between gap-4 mb-4">
+                    {data.posts.map(post => (
+                        <PostItem key={post._id} post={post} />
+                    ))}
+                </section>
+            ) : (
+                <p className="text-center text-gray-600 my-4">No hay articulos, intenta modificar los filtros</p>
+            )}
 
             <Pagination
                 page={data.pagination.page}

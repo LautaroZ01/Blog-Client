@@ -14,10 +14,12 @@ import { useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { FilterForm } from "@/components/ui/FilterForm"
 import Pagination from "@/components/ui/Pagination"
+import { useAuth } from "@/hooks/useAuth"
 
 export default function PostView() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
+  const { data: user } = useAuth()
 
   const colsPosts: Column[] = [
     { label: 'Titulo' },
@@ -139,6 +141,19 @@ export default function PostView() {
                 ))}
               </select>
             </div>
+            {user?.role === "admin" && (
+              <div>
+                <label htmlFor="writer"><small>Escritor</small></label>
+                <select id="writer" {...register("writer")} className="select-filter">
+                  <option value="">Todos</option>
+                  {data.writers.map((writer) => (
+                    <option key={writer.name} value={writer.email}>
+                      {writer.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </>
         )}
 

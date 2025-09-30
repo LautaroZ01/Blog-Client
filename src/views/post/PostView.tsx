@@ -33,9 +33,9 @@ export default function PostView({ post }: PostViewProps) {
                     <h1 className="lg:text-4xl text-2xl font-semibold text-gray-700 text-balance grow">{post.title}</h1>
                 </header>
 
-                {post.images && post.images.length > 0 && (
+                {post.images && post.images.length > 0 ? (
                     <ImageCarousel images={post.images} category={post.category.name} readTime={post.readTime} />
-                )}
+                ) : <ImgContainer img='/default-img.webp' alt={post.title} />}
 
                 <section className="flex items-start justify-between gap-2 w-full max-w-[100ch] mx-auto">
                     <button onClick={() => navigate(`${location.pathname}?writerId=${post.author?._id}`)} className="flex flex-col items-start gap-4 group cursor-pointer">
