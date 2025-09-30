@@ -17,7 +17,7 @@ export default function PostItem({ post }: PostItemProps) {
                 <img
                     src={post.images[0] || '/default-img.webp'}
                     alt={post.title}
-                    className="rounded-lg group-hover:scale-105 transition-transform duration-pro"
+                    className="rounded-lg aspect-video group-hover:scale-105 transition-transform duration-pro"
                 />
                 <small className="absolute bottom-2 right-2 badget-category">
                     {post.category.name}
@@ -39,7 +39,7 @@ export default function PostItem({ post }: PostItemProps) {
                             name={post.author?.name || ''}
                             size="small"
                         />
-                        <small className="text-gray-600">{post.author?.name || ''}</small>
+                        <small className="text-gray-600 font-semibold">{post.author?.name || ''}</small>
                     </div>
                     <small className="text-gray-600 bg-gray-100 py-0.5 px-2.5 rounded-md">{formatDate(post.createdAt?.toString() || '')}</small>
                 </footer>

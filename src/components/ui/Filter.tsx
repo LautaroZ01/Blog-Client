@@ -16,7 +16,7 @@ export default function Filter({ children }: FilterProps) {
                 <MdFilterList />
                 Filtros
             </button>
-            <div className={`${isOpen ? 'block' : 'hidden'} absolute top-12 right-0 bg-bg-50/30 backdrop-blur-sm border border-gray-300 rounded-md p-4 z-10`}>
+            <div className={`${isOpen ? 'block' : 'hidden'} absolute top-12 -right-[4rem] lg:right-0 bg-bg-50/30 backdrop-blur-sm border border-gray-300 rounded-md p-4 z-10`}>
                 {children}
             </div>
         </div>

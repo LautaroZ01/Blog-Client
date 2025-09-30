@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { Post, postEditSchema, PostFilter, PostFormType, postSchema, postsDashboardSchema, postsListSchema, postsSchema } from "@/types/postType";
+import { Post, postEditSchema, PostFilter, PostFormType, PostListFilter, postSchema, postsDashboardSchema, postsListSchema, postsSchema } from "@/types/postType";
 import { uploadImageToCloudinary } from "@/utils/cloudinary";
 import { isAxiosError } from "axios";
 
@@ -18,9 +18,9 @@ export async function getPostsHome() {
     }
 }
 
-export async function getPosts() {
+export async function getPosts(filter: PostListFilter) {
     try {
-        const { data } = await api.get('/post');
+        const { data } = await api.get('/post', { params: filter });
         const response = postsListSchema.safeParse(data);
 
         if (response.success) {

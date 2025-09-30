@@ -164,7 +164,15 @@ export const postsSchema = z.array(postSchema)
 
 export const postsListSchema = z.object({
     data: postsSchema,
-    pagination: paginationSchema
+    pagination: paginationSchema,
+    categories: z.array(categorySchema.pick({
+        _id: true,
+        name: true
+    })),
+    tags: z.array(tagSchema.pick({
+        _id: true,
+        name: true
+    })),
 })
 
 export const postsDashboardSchema = z.object({
@@ -186,6 +194,7 @@ export type Posts = z.infer<typeof postsSchema>
 export type PostFormType = z.infer<typeof postFormSchema>;
 
 export type PostFilter = z.infer<typeof postFilterSchema>;
+export type PostListFilter = Pick<PostFilter, 'search' | 'category' | 'tag' | 'page'>
 export type AnyFilter = Pick<PostFilter, 'search' | 'page'>
 
 export const commentStructure = z.object({

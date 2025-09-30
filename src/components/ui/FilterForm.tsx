@@ -13,6 +13,7 @@ type FilterFormProps<T extends BaseFilter> = {
     children?: (register: UseFormRegister<T>) => ReactNode
     placeholder?: string
     isActiveFilter?: boolean
+    isList?: boolean
 }
 
 export function FilterForm<T extends FieldValues>({
@@ -20,7 +21,8 @@ export function FilterForm<T extends FieldValues>({
     onSubmit,
     children,
     placeholder = "Buscar...",
-    isActiveFilter = true
+    isActiveFilter = true,
+    isList = false
 }: FilterFormProps<T>) {
 
     const { register, handleSubmit } = useForm<T>({
@@ -28,10 +30,9 @@ export function FilterForm<T extends FieldValues>({
     })
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 justify-end w-full">
-            {/* 🔎 Campo de búsqueda (siempre presente) */}
-            <div className="mb-4 flex flex-col gap-2 justify-center items-end grow">
-                <div className="lg:flex items-center justify-center w-full lg:max-w-lg border border-gray-300 rounded-md">
+        <form onSubmit={handleSubmit(onSubmit)} className={`flex gap-2 ${isList ? 'justify-center' : 'justify-end'} w-full flex-wrap`}>
+            <div className="mb-4 flex flex-col gap-2 justify-center items-end">
+                <div className="flex items-center justify-center lg:w-xl border border-gray-300 rounded-md">
                     <input
                         type="text"
                         placeholder={placeholder}
@@ -50,7 +51,7 @@ export function FilterForm<T extends FieldValues>({
             {isActiveFilter && (
                 <Filter>
                     {children && (
-                        <div className="flex gap-4 items-end">
+                        <div className="flex flex-col lg:flex-row gap-4 items-center lg:items-end">
                             {children(register)}
                             <button type="submit" className="btn-secundary">Filtrar</button>
                         </div>

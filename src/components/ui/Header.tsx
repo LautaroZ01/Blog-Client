@@ -44,7 +44,7 @@ export default function Header() {
       </Link>
 
       {location.pathname === '/' && (
-        <div className="flex gap-4 text-gray-500 font-semibold">
+        <div className="hidden lg:flex gap-4 text-gray-500 font-semibold">
           <a href="#posts" className="hover:text-primary-500 transition-colors duration-pro">Articulos</a>
           <a href="#contact" className="hover:text-primary-500 transition-colors duration-pro">Contacto</a>
         </div>
