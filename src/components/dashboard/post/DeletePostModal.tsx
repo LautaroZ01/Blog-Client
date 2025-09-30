@@ -20,7 +20,7 @@ export default function DeletePostModal() {
     const queryParams = new URLSearchParams(location.search)
     const postId = queryParams.get('deletePost')!
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues })
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({ defaultValues })
 
     const checkUserPasswordMutation = useMutation({
         mutationFn: checkPassword,
@@ -35,6 +35,7 @@ export default function DeletePostModal() {
             toast.success('Publicación eliminada correctamente')
             queryClient.invalidateQueries({ queryKey: ['postsDashboard'] })
             navigate(location.pathname, { replace: true })
+            reset()
         }
     })
 

@@ -21,7 +21,7 @@ export default function DeleteUserModal() {
     password: ''
   }
 
-  const { register, handleSubmit, formState: { errors } } = useForm<CheckPasswordForm>({ defaultValues })
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<CheckPasswordForm>({ defaultValues })
 
   const queryClient = useQueryClient()
 
@@ -38,6 +38,7 @@ export default function DeleteUserModal() {
       toast.success('Usuario eliminado correctamente')
       queryClient.invalidateQueries({ queryKey: ['usersDashboard'] })
       navigate(location.pathname, { replace: true })
+      reset()
     }
   })
 
