@@ -47,7 +47,7 @@ export default function UserDetailModal({ user }: UserDetailModalProps) {
     }
 
     return (
-        <Modal title="Detalle de usuario">
+        <Modal title="Detalle de usuario" isUserModal>
             <section className="min-w-2xl py-4 px-2">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
