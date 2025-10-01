@@ -83,7 +83,8 @@ export default function CommentItem({ comment, postId, author, isUser }: Comment
     })
 
     const handleChangeCommentStatus = (commentId: Comment['_id']) => {
-        mutateChangeCommentStatus(commentId)
+        if (data?.role !== 'admin') toast.error('No tienes permiso para cambiar el estado del comentario')
+        else mutateChangeCommentStatus(commentId)
     }
 
     if (isLoading) return 'Cargando...'

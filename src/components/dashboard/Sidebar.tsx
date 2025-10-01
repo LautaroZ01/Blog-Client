@@ -87,7 +87,7 @@ export default function Sidebar({ user }: SidebarProps) {
                     </li>
                 </ul>
 
-                <SideOptions title="Usuario" options={userOptions} isActive={isActive} />
+                {user.role === 'admin' && (<SideOptions title="Usuario" options={userOptions} isActive={isActive} />)}
                 <SideOptions title="Articulo" options={postOptions} isActive={isActive} />
             </nav>
 

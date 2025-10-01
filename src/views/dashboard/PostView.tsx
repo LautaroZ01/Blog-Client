@@ -34,6 +34,7 @@ export default function PostView() {
       category: searchParams.get("category") || "",
       tag: searchParams.get("tag") || "",
       status: searchParams.get("status") || "",
+      writer: searchParams.get("writer") || "",
       page: parseInt(searchParams.get("page") || "1", 10)
     }),
     [searchParams]
@@ -60,6 +61,7 @@ export default function PostView() {
     if (data.category) params.category = data.category
     if (data.tag) params.tag = data.tag
     if (data.status) params.status = data.status
+    if (data.writer) params.writer = data.writer
 
     setSearchParams(params)
 
@@ -69,6 +71,7 @@ export default function PostView() {
       category: data.category || '',
       tag: data.tag || '',
       status: data.status || '',
+      writer: data.writer || '',
       page: data.page || 1
     })
 
@@ -85,20 +88,20 @@ export default function PostView() {
   if (isLoading) return 'Cargando...'
 
 
-  if (data) return (
+  if (data && user) return (
     <>
       <Header
         title="Articulos"
         subtitleA="Esta es la vista de articulos,"
         subtitleB="aquí puede administrar los articulos."
       >
-        <Link
+        {user.role === 'writer' && <Link
           to='/dashboard/post/create'
           className="btn-primary flex items-center gap-2"
         >
           <FaPlus />
           Agregar
-        </Link>
+        </Link>}
       </Header>
 
       <FilterForm<PostFilter>
@@ -196,12 +199,12 @@ export default function PostView() {
               </small>
             </td>
             <td className="px-6 py-4 flex items-center justify-end gap-2">
-              <Link
+              {user.role === 'writer' && <Link
                 to={`/dashboard/post/edit/${post._id}`}
                 className="btn-rounded"
               >
                 <MdModeEdit />
-              </Link>
+              </Link>}
               <button
                 className="btn-rounded-delete"
                 onClick={() => navigate(`${location.pathname}?deletePost=${post._id}`)}
