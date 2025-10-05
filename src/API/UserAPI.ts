@@ -1,4 +1,5 @@
 import api from "@/lib/axios";
+import { Post } from "@/types/postType";
 import { userDashboardPaginationSchema, userDashboardSchema } from "@/types/type";
 import { ChangePasswordForm, ContactForm, EditRoleForm, ProfileForm, profileSchema, User, UserFilter } from "@/types/userType";
 import { isAxiosError } from "axios";
@@ -58,7 +59,7 @@ export async function getAllUsers(query: UserFilter) {
     try {
         const { data } = await api.get('/dashboard/user', { params: query })
         const response = userDashboardPaginationSchema.safeParse(data)
-        
+
 
         if (response.success) {
             return response.data
@@ -92,7 +93,7 @@ export async function getUserById(userId: User['_id']) {
 export async function updateUserRole({ userId, formData }: { userId: User['_id'], formData: EditRoleForm }) {
     try {
         const { data } = await api.patch<string>(`/dashboard/user/${userId}/role`, formData)
-        
+
         return data
     } catch (error) {
         if (isAxiosError(error) && error.response) {
@@ -113,7 +114,7 @@ export async function changeUserStatus(userId: User['_id']) {
     }
 }
 
-export async function deleteUser(userId: User['_id']){
+export async function deleteUser(userId: User['_id']) {
     try {
         const { data } = await api.delete<string>(`/dashboard/user/${userId}`)
 
@@ -128,7 +129,19 @@ export async function deleteUser(userId: User['_id']){
 export async function sendContactForm(formData: ContactForm) {
     try {
         const { data } = await api.post<string>('/auth/email', formData)
-        
+
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function sendPostAsPdf(postId: Post['_id']) {
+    try {
+        const { data } = await api.get<string>(`/post/${postId}/pdf`)
+
         return data
     } catch (error) {
         if (isAxiosError(error) && error.response) {

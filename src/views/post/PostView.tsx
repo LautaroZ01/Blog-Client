@@ -1,14 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AuthPhoto from "@/components/auth/AuthPhoto";
 import ImageCarousel from "@/components/post/ImageCarousel";
 import ArrowBack from "@/components/ui/ArrowBack";
 import { Post } from "@/types/postType"
 import { formatDate } from "@/utils/formatUtil";
-import { FaComment } from "react-icons/fa";
+import { FaComment, FaFilePdf } from "react-icons/fa";
 import CommentView from "./comments/CommentView";
 import LikePost from "@/components/post/LikePost";
 import { useNavigate } from "react-router-dom";
 import ImgContainer from "@/components/post/ImgContainer";
+import { sendPostAsPdf } from "@/API/UserAPI";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { useAuth } from "@/hooks/useAuth";
 
 type PostViewProps = {
     post: Post & {
@@ -18,6 +22,9 @@ type PostViewProps = {
 
 export default function PostView({ post }: PostViewProps) {
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
+    const { data, isLoading: isLoadingAuth } = useAuth()
+
     useEffect(() => {
         document.title = post.title;
         window.scrollTo(0, 0);
@@ -25,6 +32,26 @@ export default function PostView({ post }: PostViewProps) {
             document.title = 'Blog';
         };
     }, [post.title]);
+
+    const { mutate } = useMutation({
+        mutationFn: sendPostAsPdf,
+        onError: (error) => {
+            toast.error(error.message)
+            setIsLoading(false)
+        },
+        onSuccess: (data) => {
+            toast.success(data)
+            setIsLoading(false)
+        },
+    })
+
+    const handleSendPdf = () => {
+        setIsLoading(true)
+        mutate(post._id)
+    }
+
+    if (isLoadingAuth) return 'Cargando...'
+
     return (
         <>
             <main className="max-w-6xl mx-auto px-4 py-8">
@@ -51,6 +78,12 @@ export default function PostView({ post }: PostViewProps) {
                     </button>
                     <div className="flex flex-col items-end gap-2">
                         <div className="flex items-center gap-6 text-sm text-gray-500 font-bold">
+                            {data && (
+                                <button onClick={handleSendPdf} className="flex items-center cursor-pointer hover:text-primary-400 transition-colors duration-pro">
+                                    <FaFilePdf className="inline mr-2" />
+                                    {isLoading ? 'Enviando...' : 'Solicitar PDF'}
+                                </button>
+                            )}
                             <LikePost postId={post._id} likes={post.likes} />
                             <div>
                                 <FaComment className="inline mr-2" />
