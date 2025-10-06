@@ -93,7 +93,14 @@ export default function ReplyItem({ reply, postId, isUser, authorId }: ReplyItem
                 </div>
                 {data &&
                     <div className="flex items-center gap-2">
-                        {data.role !== 'user' && reply.status && <button onClick={() => handleChangeCommentStatus(reply._id)} className="bg-accent-50 text-accent-600 p-1 rounded-full font-bold cursor-pointer"><small>{commentStatus[reply.status]}</small></button>}
+                        {data.role !== 'user' && reply.status && (
+                            data.role === 'admin' ? (
+                                <button onClick={() => handleChangeCommentStatus(reply._id)} className="bg-accent-50 text-accent-600 p-1 rounded-full font-bold cursor-pointer"><small>{commentStatus[reply.status]}</small></button>
+
+                            ) : (
+                                <div className="bg-accent-50 text-accent-600 p-1 rounded-full font-bold"><small>{commentStatus[reply.status]}</small></div>
+                            )
+                        )}
                         <OptionsComment commentId={reply._id} authorId={reply.author!._id} postId={postId} editFunction={() => setShowEdit(!showEdit)} reports={reply.reports} isUser={isUser} />
                     </div>
                 }

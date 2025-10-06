@@ -8,7 +8,8 @@ export const postOptions: DashboardOption[] = [
     {
         name: 'Categorías',
         component: CategoryView,
-        path: 'category'
+        path: 'category',
+        isPrivate: true
     },
     {
         name: 'Tags',

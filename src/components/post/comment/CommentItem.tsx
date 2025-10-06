@@ -83,8 +83,7 @@ export default function CommentItem({ comment, postId, author, isUser }: Comment
     })
 
     const handleChangeCommentStatus = (commentId: Comment['_id']) => {
-        if (data?.role !== 'admin') toast.error('No tienes permiso para cambiar el estado del comentario')
-        else mutateChangeCommentStatus(commentId)
+        mutateChangeCommentStatus(commentId)
     }
 
     if (isLoading) return 'Cargando...'
@@ -102,7 +101,14 @@ export default function CommentItem({ comment, postId, author, isUser }: Comment
                     </div>
                     {data &&
                         <div className="flex items-center gap-2">
-                            {data.role !== 'user' && comment.status && <button onClick={() => handleChangeCommentStatus(comment._id)} className="bg-accent-50 text-accent-600 p-1 rounded-full font-bold cursor-pointer"><small>{commentStatus[comment.status]}</small></button>}
+                            {data.role !== 'user' && comment.status && (
+                                data.role === 'admin' ? (
+                                    <button onClick={() => handleChangeCommentStatus(comment._id)} className="bg-accent-50 text-accent-600 p-1 rounded-full font-bold cursor-pointer"><small>{commentStatus[comment.status]}</small></button>
+
+                                ) : (
+                                    <div className="bg-accent-50 text-accent-600 p-1 rounded-full font-bold"><small>{commentStatus[comment.status]}</small></div>
+                                )
+                            )}
                             <OptionsComment commentId={comment._id} authorId={authorInformation!._id} postId={postId} editFunction={() => setShowEdit(!showEdit)} reports={comment.reports} isUser={isUser} />
                         </div>
                     }

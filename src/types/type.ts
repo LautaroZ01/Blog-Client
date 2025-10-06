@@ -6,6 +6,7 @@ export type DashboardOption = {
     name: string
     component: React.ComponentType
     path: string
+    isPrivate?: boolean
 }
 
 export const usersDashboardSchema = userSchema.pick({

@@ -195,7 +195,7 @@ export default function PostView() {
               {index += 1}
             </td>
             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex flex-col gap-2">
-              {post.title}
+              <Link to={`/post/${post.slug}`} className="hover:text-primary-400 transition-colors duration-pro">{post.title}</Link>
               <small className="text-gray-500">
                 {post.createdAt && formatDate(post.createdAt?.toString())}
               </small>
