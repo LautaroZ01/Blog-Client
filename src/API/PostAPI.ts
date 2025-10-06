@@ -1,6 +1,7 @@
 import api from "@/lib/axios";
 import { Post, postEditSchema, PostFilter, PostFormType, PostListFilter, postSchema, postsListSchema, postsSchema } from "@/types/postType";
 import { uploadImageToCloudinary } from "@/utils/cloudinary";
+import { StatsData } from "@/utils/generatePostReportPDF";
 import { isAxiosError } from "axios";
 
 export async function getPostsHome() {
@@ -157,6 +158,17 @@ export async function likePost(postId: Post['_id']) {
 export async function dislikePost(postId: Post['_id']) {
     try {
         const { data } = await api.patch<string>(`/post/${postId}/dislike`);
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function getPostsStats(filters: PostFilter) {
+    try {
+        const { data } = await api.get<StatsData>('/dashboard/post/stats', { params: filters });
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {

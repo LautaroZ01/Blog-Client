@@ -1,9 +1,9 @@
-import { getPostDashboard } from "@/API/PostAPI"
+import { getPostDashboard, getPostsStats } from "@/API/PostAPI"
 import Header from "@/components/dashboard/Header"
 import Table from "@/components/dashboard/Table"
 import { Column, PostFilter, postStatusSchema } from "@/types/postType"
-import { useQuery } from "@tanstack/react-query"
-import { FaPlus, FaComments, FaEye, FaHeart } from "react-icons/fa"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { FaPlus, FaComments, FaEye, FaHeart, FaFilePdf } from "react-icons/fa"
 import { MdDelete, MdModeEdit } from "react-icons/md"
 import { Link, useNavigate } from "react-router-dom"
 import { formatDate } from "@/utils/formatUtil"
@@ -15,6 +15,8 @@ import { useSearchParams } from "react-router-dom"
 import { FilterForm } from "@/components/ui/FilterForm"
 import Pagination from "@/components/ui/Pagination"
 import { useAuth } from "@/hooks/useAuth"
+import { toast } from "react-toastify"
+import { generatePostReportPDF } from "@/utils/generatePostReportPDF"
 
 export default function PostView() {
   const navigate = useNavigate()
@@ -85,6 +87,21 @@ export default function PostView() {
     })
   }
 
+  const { mutate } = useMutation({
+    mutationFn: getPostsStats,
+    onSuccess: (data) => {
+      if (!data) return
+      generatePostReportPDF(data)
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    }
+  })
+
+  const handleGenerateReport = () => {
+    mutate(filter)
+  }
+
   if (isLoading) return 'Cargando...'
 
 
@@ -95,13 +112,22 @@ export default function PostView() {
         subtitleA="Esta es la vista de articulos,"
         subtitleB="aquí puede administrar los articulos."
       >
-        {user.role === 'writer' && <Link
-          to='/dashboard/post/create'
-          className="btn-primary flex items-center gap-2"
-        >
-          <FaPlus />
-          Agregar
-        </Link>}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleGenerateReport}
+            className="btn-secundary flex items-center gap-2"
+          >
+            <FaFilePdf />
+            Generar informe
+          </button>
+          {user.role === 'writer' && <Link
+            to='/dashboard/post/create'
+            className="btn-primary flex items-center gap-2"
+          >
+            <FaPlus />
+            Agregar
+          </Link>}
+        </div>
       </Header>
 
       <FilterForm<PostFilter>
