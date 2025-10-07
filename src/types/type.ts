@@ -57,3 +57,44 @@ export const userDashboardPaginationSchema = z.object({
 
 export type UsersDashboard = z.infer<typeof usersDashboardSchema>
 export type UserDashboard = z.infer<typeof userDashboardSchema>
+
+export const statsDataSchema = z.object({
+    totalPosts: z.number(),
+    totalComments: z.number(),
+    totalConversations: z.number(),
+    totalReactions: z.number(),
+    commentsPerMonth: z.array(
+        z.object({
+            postTitle: z.string(),
+            data: z.record(z.string(), z.number()),
+        })
+    ),
+    viewsLastPosts: z.array(
+        z.object({
+            title: z.string(),
+            views: z.number(),
+        })
+    ),
+    lastConversations: z.array(
+        z.object({
+            _id: z.string(),
+            participants: z.array(
+                z.object({
+                    _id: z.string(),
+                    name: z.string(),
+                    lastname: z.string(),
+                    photo: z.string(),
+                })
+            ),
+            messages: z.array(
+                z.object({
+                    _id: z.string(),
+                    text: z.string(),
+                    createdAt: z.string(),
+                })
+            ),
+        })
+    ),
+});
+
+export type StatsData = z.infer<typeof statsDataSchema>;
