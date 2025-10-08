@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { statsDataSchema } from "@/types/type";
+import { statsDataSchema, StatsSchema } from "@/types/type";
 import { Contact, ContactFormType, SocialNetwork, SocialNetworkForm, socialProfileSchema, User, WriterForm, writerInfoSchema, writerSchema } from "@/types/userType";
 import { isAxiosError } from "axios";
 
@@ -153,6 +153,21 @@ export async function getWriterStats() {
     try {
         const { data } = await api.get('/dashboard/writer-stats');
         const response = statsDataSchema.safeParse(data);
+
+        if (response.success) {
+            return response.data;
+        }
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function getAdminStats() {
+    try {
+        const { data } = await api.get('/dashboard/admin-stats');
+        const response = StatsSchema.safeParse(data);
 
         if (response.success) {
             return response.data;

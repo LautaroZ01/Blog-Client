@@ -97,4 +97,26 @@ export const statsDataSchema = z.object({
     ),
 });
 
+export const StatsSchema = z.object({
+    totalUsers: z.number(),
+    totalPosts: z.number(),
+    totalViews: z.number(),
+    totalConversations: z.number(),
+    postsByCategory: z.object({
+      labels: z.array(z.string()),
+      data: z.array(z.number()),
+    }),
+    commentsLikesPerPost: z.object({
+      labels: z.array(z.string()),
+      comments: z.array(z.number()),
+      likes: z.array(z.number()),
+    }),
+    messagesTimeline: z.object({
+      labels: z.array(z.string()),
+      data: z.array(z.number()),
+    }),
+  });
+  
+  export type StatsDataAdmin = z.infer<typeof StatsSchema>;
+
 export type StatsData = z.infer<typeof statsDataSchema>;
