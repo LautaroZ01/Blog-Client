@@ -35,16 +35,6 @@ type WriterDashboardProps = {
 
 const WriterDashboard = ({ stats }: WriterDashboardProps) => {
     const { data, isLoading } = useAuth()
-    const viewsBarData = {
-        labels: stats.viewsLastPosts.map((v) => v.title),
-        datasets: [
-            {
-                label: "Vistas",
-                data: stats.viewsLastPosts.map((v) => v.views),
-                backgroundColor: "rgba(37, 99, 235, 0.6)",
-            },
-        ],
-    };
 
     const conversations = stats.lastConversations.map((conv) => {
         const lastMsg = conv.messages[0]?.text || "Sin mensajes aún";
