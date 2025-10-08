@@ -9,7 +9,6 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-import { Line, Bar } from "react-chartjs-2";
 import { FaBook, FaCommentDots, FaHeart, FaComments, FaPlus } from "react-icons/fa";
 import { StatsData } from "@/types/type";
 import { useAuth } from "@/hooks/useAuth";
@@ -36,9 +35,6 @@ type WriterDashboardProps = {
 
 const WriterDashboard = ({ stats }: WriterDashboardProps) => {
     const { data, isLoading } = useAuth()
-    // ---------------------------
-    // 2️⃣ Datos para la gráfica de barras
-    // ---------------------------
     const viewsBarData = {
         labels: stats.viewsLastPosts.map((v) => v.title),
         datasets: [
@@ -50,9 +46,6 @@ const WriterDashboard = ({ stats }: WriterDashboardProps) => {
         ],
     };
 
-    // ---------------------------
-    // 3️⃣ Conversaciones recientes
-    // ---------------------------
     const conversations = stats.lastConversations.map((conv) => {
         const lastMsg = conv.messages[0]?.text || "Sin mensajes aún";
         const otherParticipant = conv.participants[1];
@@ -64,9 +57,6 @@ const WriterDashboard = ({ stats }: WriterDashboardProps) => {
         };
     });
 
-    // ---------------------------
-    // 4️⃣ UI
-    // ---------------------------
     if (isLoading) return 'Cargando...'
 
     if (data) return (
@@ -90,10 +80,10 @@ const WriterDashboard = ({ stats }: WriterDashboardProps) => {
                 <div>
                     <h2 className="text-lg font-semibold text-gray-600">Resumen general</h2>
                     <div className="grid grid-cols-2 grid-rows-2 gap-4">
-                        <ItemDashboard color="green-500" bgColor="bg-green-50" title="Articulos" quantity={stats.totalPosts} icon={<FaBook className="size-6" />} />
-                        <ItemDashboard color="blue-500" bgColor="bg-blue-50" title="Comentarios" quantity={stats.totalComments} icon={<FaCommentDots className="size-6" />} />
-                        <ItemDashboard color="purple-500" bgColor="bg-purple-50" title="Conversaciones" quantity={stats.totalConversations} icon={<FaComments className="size-6" />} />
-                        <ItemDashboard color="red-500" bgColor="bg-red-50" title="Reacciones" quantity={stats.totalReactions} icon={<FaHeart className="size-6" />} />
+                        <ItemDashboard bgColor2="bg-green-500" bgColor="bg-green-50" textColor="text-green-500" title="Articulos" quantity={stats.totalPosts} icon={<FaBook className="size-6" />} />
+                        <ItemDashboard bgColor2="bg-blue-500" bgColor="bg-blue-50" textColor="text-blue-500" title="Comentarios" quantity={stats.totalComments} icon={<FaCommentDots className="size-6" />} />
+                        <ItemDashboard bgColor2="bg-purple-500" bgColor="bg-purple-50" textColor="text-purple-500" title="Conversaciones" quantity={stats.totalConversations} icon={<FaComments className="size-6" />} />
+                        <ItemDashboard bgColor2="bg-red-500" bgColor="bg-red-50" textColor="text-red-500" title="Reacciones" quantity={stats.totalReactions} icon={<FaHeart className="size-6" />} />
                     </div>
                 </div>
                 <div className="col-span-2">
