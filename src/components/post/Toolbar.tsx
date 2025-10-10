@@ -56,19 +56,19 @@ export default function Toolbar({ editor }: ToolbarProps) {
             </button>
             <button
                 type='button'
-                onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                className={`px-2 py-1 rounded cursor-pointer ${editor.isActive('heading', { level: 1 }) ? optionOnStyle : optionOffStyle}`}
-                title="Encabezado 1"
-            >
-                <p className='font-semibold'>H1</p>
-            </button>
-            <button
-                type='button'
                 onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
                 className={`px-2 py-1 rounded cursor-pointer ${editor.isActive('heading', { level: 2 }) ? optionOnStyle : optionOffStyle}`}
                 title="Encabezado 2"
             >
                 <p className='font-semibold'>H2</p>
+            </button>
+            <button
+                type='button'
+                onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                className={`px-2 py-1 rounded cursor-pointer ${editor.isActive('heading', { level: 3 }) ? optionOnStyle : optionOffStyle}`}
+                title="Encabezado 3"
+            >
+                <p className='font-semibold'>H3</p>
             </button>
             <button
                 type='button'
