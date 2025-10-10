@@ -66,8 +66,8 @@ const WriterDashboard = ({ stats }: WriterDashboardProps) => {
                     </Link>
                 </div>
             </header>
-            <div className="grid grid-cols-3 grid-rows-2 gap-6 py-10">
-                <div>
+            <div className="grid grid-cols-5 grid-rows-2 gap-4">
+                <div className="col-span-2">
                     <h2 className="text-lg font-semibold text-gray-600">Resumen general</h2>
                     <div className="grid grid-cols-2 grid-rows-2 gap-4">
                         <ItemDashboard bgColor2="bg-green-500" bgColor="bg-green-50" textColor="text-green-500" title="Articulos" quantity={stats.totalPosts} icon={<FaBook className="size-6" />} />
@@ -76,19 +76,19 @@ const WriterDashboard = ({ stats }: WriterDashboardProps) => {
                         <ItemDashboard bgColor2="bg-red-500" bgColor="bg-red-50" textColor="text-red-500" title="Reacciones" quantity={stats.totalReactions} icon={<FaHeart className="size-6" />} />
                     </div>
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-3 col-start-3">
                     <h2 className="text-lg font-semibold text-gray-600 mb-2">
                         Comentarios por mes
                     </h2>
                     <ComentsStats stats={stats.commentsPerMonth} />
                 </div>
-                <div className="col-span-2 row-start-2">
+                <div className="col-span-3 row-start-2">
                     <h2 className="text-lg font-semibold text-gray-600 mb-2">
                         Vistas por articulo
                     </h2>
                     <ViewsStats viewsLastPosts={stats.viewsLastPosts} />
                 </div>
-                <div className="col-start-3 row-start-2 flex flex-col">
+                <div className="col-span-2 col-start-4 row-start-2 flex flex-col">
                     <h2 className="text-lg font-semibold text-gray-600">
                         Conversaciones recientes
                     </h2>

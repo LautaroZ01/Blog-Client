@@ -73,7 +73,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
         },
         scales: {
             x: {
-                ticks: { color: "#6B7280" },
+                ticks: { display: false },
                 grid: { display: false },
             },
             y: {
@@ -129,8 +129,8 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                     </Link>
                 </div>
             </header>
-            <div className="grid grid-cols-3 grid-rows-2 gap-4 py-10 h-[80vh]">
-                <div className="bg-white rounded-lg shadow p-4 flex flex-col justify-center">
+            <div className="grid grid-cols-5 grid-rows-2 gap-4">
+                <div className="col-span-2 bg-white rounded-lg shadow flex flex-col justify-center">
                     <h2 className="text-lg font-semibold text-gray-700 mb-2">
                         Resumen general
                     </h2>
@@ -170,7 +170,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                     </div>
                 </div>
 
-                <div className="col-span-2 bg-white rounded-lg shadow p-4 flex flex-col">
+                <div className="col-span-3 col-start-3 bg-white rounded-lg shadow p-4 flex flex-col">
                     <h3 className="font-semibold text-gray-700 mb-2">
                         Comentarios y Likes por Post
                     </h3>
@@ -179,7 +179,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                     </div>
                 </div>
 
-                <div className="col-span-2 row-start-2 bg-white rounded-lg shadow p-4 flex flex-col">
+                <div className="col-span-3 row-start-2 bg-white rounded-lg shadow p-4 flex flex-col">
                     <h3 className="font-semibold text-gray-700 mb-2">
                         Conversaciones a lo largo del tiempo
                     </h3>
@@ -188,7 +188,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                     </div>
                 </div>
 
-                <div className="col-start-3 row-start-2 bg-white rounded-lg shadow p-4 flex flex-col">
+                <div className="col-span-2 col-start-4 row-start-2 bg-white rounded-lg shadow p-4 flex flex-col">
                     <h3 className="font-semibold text-gray-700 mb-2">
                         Posts por Categoría
                     </h3>
