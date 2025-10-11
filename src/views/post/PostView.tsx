@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ReactMarkdown from 'react-markdown';
 import AuthPhoto from "@/components/auth/AuthPhoto";
 import ImageCarousel from "@/components/post/ImageCarousel";
 import ArrowBack from "@/components/ui/ArrowBack";
@@ -13,6 +14,8 @@ import { sendPostAsPdf } from "@/API/UserAPI";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useAuth } from "@/hooks/useAuth";
+import { generateSummary } from "@/API/AIAPI";
+import { BsStars } from "react-icons/bs";
 
 type PostViewProps = {
     post: Post & {
@@ -23,6 +26,9 @@ type PostViewProps = {
 export default function PostView({ post }: PostViewProps) {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingSummary, setIsLoadingSummary] = useState(false)
+    const [isSummaryGenerated, setIsSummaryGenerated] = useState(false)
+    const [summary, setSummary] = useState('')
     const { data, isLoading: isLoadingAuth } = useAuth()
 
     useEffect(() => {
@@ -50,6 +56,22 @@ export default function PostView({ post }: PostViewProps) {
         mutate(post._id)
     }
 
+    const handleGenerateSummary = async () => {
+        setSummary('')
+        setIsLoadingSummary(true)
+        setIsSummaryGenerated(true)
+
+        const content = post.content + post.sections?.map(section => section.content).join('') || ''
+        if (!content) return
+
+        const data = await generateSummary({ title: post.title, content })
+        for await (const chunk of data) {
+            setSummary((prev) => prev + chunk)
+        }
+
+        setIsLoadingSummary(false)
+    }
+
     if (isLoadingAuth) return 'Cargando...'
 
     return (
@@ -64,13 +86,13 @@ export default function PostView({ post }: PostViewProps) {
                     <ImageCarousel images={post.images} category={post.category.name} readTime={post.readTime} />
                 ) : <ImgContainer img='/default-img.webp' alt={post.title} />}
 
-                <section className="flex items-start justify-between gap-2 w-full max-w-[100ch] mx-auto">
+                <section className="flex items-start justify-between gap-2 w-full max-w-[100ch] mx-auto border-b border-gray-300 pb-4">
                     <button onClick={() => navigate(`${location.pathname}?writerId=${post.author?._id}`)} className="flex flex-col items-start gap-4 group cursor-pointer">
                         <div className="flex items-center gap-2 text-sm">
                             <div>
                                 <AuthPhoto photo={post.author?.photo || ''} name={post.author?.name || ''} size="small" />
                             </div>
-                            <div>
+                            <div className="md:block hidden">
                                 <p className="font-bold text-gray-700 text-left group-hover:text-primary-400 transition-colors duration-pro">{post.author?.name || ''}</p>
                                 <p className="text-gray-500">{post.author?.email || ''}</p>
                             </div>
@@ -79,9 +101,15 @@ export default function PostView({ post }: PostViewProps) {
                     <div className="flex flex-col items-end gap-2">
                         <div className="flex items-center gap-6 text-sm text-gray-500 font-bold">
                             {data && (
+                                <button onClick={handleGenerateSummary} className="flex items-center cursor-pointer hover:text-primary-400 transition-colors duration-pro disabled:opacity-50 disabled:cursor-not-allowed" disabled={isLoadingSummary}>
+                                    <BsStars className="inline mr-2" />
+                                    <p className="md:block hidden">{isLoadingSummary ? 'Generando...' : 'Generar resumen'}</p>
+                                </button>
+                            )}
+                            {data && (
                                 <button onClick={handleSendPdf} className="flex items-center cursor-pointer hover:text-primary-400 transition-colors duration-pro">
                                     <FaFilePdf className="inline mr-2" />
-                                    {isLoading ? 'Enviando...' : 'Solicitar PDF'}
+                                    <p className="md:block hidden">{isLoading ? 'Enviando...' : 'Solicitar PDF'}</p>
                                 </button>
                             )}
                             <LikePost postId={post._id} likes={post.likes} />
@@ -96,9 +124,23 @@ export default function PostView({ post }: PostViewProps) {
                     </div>
                 </section>
 
+                {isSummaryGenerated && <section className="my-8 flex flex-col items-center justify-center border-b border-gray-300 pb-4">
+                    {isLoadingSummary ? (
+                        <p className="text-gray-500 animate-pulse">Generando...</p>
+                    ) : (
+                        <h3 className="text-center text-xl font-semibold">Resumen generado con IA</h3>
+                    )}
+                    <div className="max-w-[80ch] mt-8 mx-auto pt-4 prose prose-lg">
+                        <ReactMarkdown>
+                            {summary}
+                        </ReactMarkdown>
+                    </div>
+                </section>}
+
+
                 {post.content && (
                     <div
-                        className="max-w-[80ch] mt-8 mx-auto border-t border-gray-300 pt-4 prose prose-lg"
+                        className="max-w-[80ch] mt-8 mx-auto pt-4 prose prose-lg"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     />
                 )}
