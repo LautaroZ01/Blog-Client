@@ -206,6 +206,15 @@ h3 {
     @apply min-w-50 border border-gray-300 rounded-md p-2 cursor-pointer;
 }
 
+.nav-footer{
+    a{
+        @apply md:border-r-2 md:border-primary-500/40 px-6;
+    }
+    a:last-child{
+        @apply md:border-r-0;
+    }
+}
+
 @keyframes menuanimation {
     0% {
         transform: scale(0);
