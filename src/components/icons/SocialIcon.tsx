@@ -10,6 +10,7 @@ import {
   FaTelegramPlane
 } from "react-icons/fa";
 import { FaThreads, FaXTwitter } from "react-icons/fa6";
+import { LuCopyCheck } from "react-icons/lu";
 import { z } from "zod";
 
 
@@ -24,7 +25,7 @@ const SocialIcons = [
   {
     name: 'facebook',
     icon: FaFacebook,
-    defaultColor: 'text-blue-600' // Tailwind class
+    defaultColor: 'text-blue-600'
   },
   {
     name: 'instagram',
@@ -70,6 +71,11 @@ const SocialIcons = [
     name: 'telegram',
     icon: FaTelegramPlane,
     defaultColor: 'text-blue-400'
+  },
+  {
+    name: 'copy',
+    icon: LuCopyCheck,
+    defaultColor: 'text-green-400'
   }
 ];
 

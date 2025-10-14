@@ -18,7 +18,8 @@ export const contactsTypeSchema = z.enum([
     'email',
     'whatsapp',
     'linkedin',
-    'telegram'
+    'telegram',
+    'copy'
 ])
 
 export const userSchema = z.object({

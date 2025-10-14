@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getWriteInfo } from "@/API/WriterAPI";
 import { formatAge } from "@/utils/formatUtil";
 import SocialIcon from "@/components/icons/SocialIcon";
-import BtnCopyContact from "../contact/BtnCopyContact";
+import CopyContact from "../contact/CopyContact";
 
 export default function WriterModal() {
     const navigate = useNavigate();
@@ -76,9 +76,7 @@ export default function WriterModal() {
                         </div>
                         <div className="mt-2 flex items-center gap-2">
                             {data.contacts && Object.entries(data.contacts).map(([key, value]) => (
-                                <BtnCopyContact key={key} contact={value.name} className="link-social">
-                                    <SocialIcon name={value.type} size="small" />
-                                </BtnCopyContact>
+                                <CopyContact key={key} contact={value} isActive={false}/>
                             ))}
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import { sendContactForm } from "@/API/UserAPI";
 import InputContainer from "@/components/auth/InputContainer";
 import SocialIcon from "@/components/icons/SocialIcon";
+import CopyContact from "@/components/profile/contact/CopyContact";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { useAuth } from "@/hooks/useAuth";
 import { ContactForm, WriterProfile } from "@/types/userType";
@@ -65,14 +66,7 @@ export default function ContactView({ writerInfo }: ContactViewProps) {
                 )}
                 <div className="flex flex-col lg:flex-row items-center gap-4">
                     {writerInfo.contacts.map((contact) => (
-                        <div key={contact._id} className="flex items-center gap-2 group cursor-pointer">
-                            <div className="rounded-full p-2 shadow-md group-hover:bg-gray-100 transition-colors duration-pro">
-                                <SocialIcon name={contact.type} size="small" />
-                            </div>
-                            <span className="text-gray-500 font-semibold group-hover:text-primary-500 transition-colors duration-pro">
-                                {contact.name}
-                            </span>
-                        </div>
+                        <CopyContact contact={contact} key={contact._id} />
                     ))}
                 </div>
                 <div className="flex items-center gap-4">
