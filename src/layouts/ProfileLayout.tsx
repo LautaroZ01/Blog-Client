@@ -10,9 +10,9 @@ export default function ProfileLayout() {
     if (!data) return <Navigate to={'/'} />
 
     return (
-        <>
+        <div className="min-h-screen">
             <Tabs />
             <Outlet />
-        </>
+        </div>
     )
 }

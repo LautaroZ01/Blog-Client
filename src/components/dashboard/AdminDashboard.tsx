@@ -129,7 +129,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
                     </Link>
                 </div>
             </header>
-            <div className="grid grid-cols-5 grid-rows-2 gap-4">
+            <div className="grid grid-cols-5 grid-rows-2 gap-4 py-10">
                 <div className="col-span-2 bg-white rounded-lg shadow flex flex-col justify-center">
                     <h2 className="text-lg font-semibold text-gray-700 mb-2">
                         Resumen general
