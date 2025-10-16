@@ -38,7 +38,7 @@ const WriterDashboard = ({ stats }: WriterDashboardProps) => {
 
     const conversations = stats.lastConversations.map((conv) => {
         const lastMsg = conv.messages[0]?.text || "Sin mensajes aún";
-        const otherParticipant = conv.participants[1];
+        const otherParticipant = conv.participants[0];
         return {
             id: conv._id,
             name: `${otherParticipant?.name || "Usuario"} ${otherParticipant?.lastname || ""}`,
