@@ -66,7 +66,7 @@ const WriterDashboard = ({ stats }: WriterDashboardProps) => {
                     </Link>
                 </div>
             </header>
-            <div className="grid grid-cols-5 grid-rows-2 gap-4">
+            <div className="grid grid-cols-5 grid-rows-2 gap-4 py-10">
                 <div className="col-span-2">
                     <h2 className="text-lg font-semibold text-gray-600">Resumen general</h2>
                     <div className="grid grid-cols-2 grid-rows-2 gap-4">
